@@ -88,4 +88,10 @@ function changeLine() {
   console.log(gMeme.selectedLineIdx);
 }
 
-function setFontSize() {}
+function setFontSize(toIncrease) {
+  // If increase is false decrease by one otherwise increment by 1
+  gMeme.lines.at(gMeme.selectedLineIdx).size += toIncrease * 2 - 1;
+}
+function setColor(color) {
+  gMeme.lines.at(gMeme.selectedLineIdx).color = color;
+}

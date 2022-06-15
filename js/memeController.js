@@ -60,7 +60,6 @@ function drawImage(img) {
 function onAddLine() {
   const meme = addLine();
   const newLine = meme.selectedLineIdx;
-  console.log(newLine);
   const { lineHeight, lineWidth } = textSize(gMeme.lines.at(newLine).txt);
   setLinePos(gCanvas, newLine, lineWidth, lineHeight);
   renderMeme();
@@ -68,4 +67,20 @@ function onAddLine() {
 
 function onChangeLine() {
   changeLine();
+}
+
+function onSetClr(color) {
+  setColor(color);
+  renderMeme();
+}
+
+function onSetFontSize(toIncrease) {
+  setFontSize(toIncrease);
+  renderMeme();
+}
+
+function showGallery() {
+  document.querySelector('.meme-gallery').classList.remove('hidden');
+  document.querySelector('.meme-editor').classList.add('hidden');
+  renderMeme();
 }

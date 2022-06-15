@@ -11,7 +11,7 @@
     <header class="main-header flex space-between align-center">
       <div class="main-logo p3">LOGO</div>
       <ul class="main-nav clean-list flex">
-        <li>Gallery</li>
+        <li onclick="showGallery()">Gallery</li>
         <li>Memess</li>
         <li>About</li>
       </ul>
@@ -40,8 +40,16 @@
             </button>
             <button onclick="onAddLine()" class="btn add-line-btn">Add</button>
             <button onclick="onDeleteLine()" class="btn trash-btn"></button>
+          </div>
+          <div class="secondary-features">
+            <button onclick="onSetFontSize(true)" class="btn increase-fs">
+              A+
+            </button>
+            <button onclick="onSetFontSize(false)" class="btn decrease-fs">
+              A-
+            </button>
             <input
-              onclick="onSetClr(this.value)"
+              onchange="onSetClr(this.value)"
               class="btn change-clr"
               type="color"
               name="color"
