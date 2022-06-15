@@ -35,6 +35,12 @@
             placeholder="Write Your Meme..."
           />
           <div class="main-features">
+            <button onclick="onSetTextPos(false)" class="btn btn-move-up">
+              ↑
+            </button>
+            <button onclick="onSetTextPos(true)" class="btn btn-move-down">
+              ↓
+            </button>
             <button onclick="onChangeLine()" class="btn change-line-btn">
               SwitchLine
             </button>
@@ -63,6 +69,21 @@
               name="color"
               value="#ffffff"
             />
+            <button onclick="onSetAlignment('left')" class="btn btn-align-left">
+              left
+            </button>
+            <button
+              onclick="onSetAlignment('center')"
+              class="btn btn-align-center"
+            >
+              ☰
+            </button>
+            <button
+              onclick="onSetAlignment('right')"
+              class="btn btn-align-right"
+            >
+              right
+            </button>
           </div>
           <div class="emojis"></div>
           <div class="additional">

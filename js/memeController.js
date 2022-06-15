@@ -23,24 +23,23 @@ function renderMeme() {
 }
 
 function drawRectOnSelectedLine() {
+  const rectPadding = 20;
   const meme = getMeme();
   const selectedLine = meme.lines[meme.selectedLineIdx];
   if (!selectedLine || !selectedLine.txt) return;
   const { lineHeight, lineWidth } = textSize(selectedLine.txt);
-  gCtx.strokeRect(selectedLine.x, selectedLine.y, lineWidth, -lineHeight);
+  gCtx.strokeRect(
+    selectedLine.x - rectPadding / 2,
+    selectedLine.y,
+    lineWidth + rectPadding,
+    -lineHeight
+  );
 }
-function onSetTextPos() {}
 
 function onSetLineTxt(txt) {
   const meme = getMeme();
   if (!meme.lines.length) addLine();
   setLineTxt(txt, meme.selectedLineIdx);
-  // Set text font and size
-  // Get text width and height
-  const { lineHeight, lineWidth } = textSize(txt);
-  // Set line pos
-  setLinePos(gCanvas, meme.selectedLineIdx, lineWidth, lineHeight);
-  // Draw text on canvas
   renderMeme();
 }
 
@@ -57,6 +56,12 @@ function drawText({ x, y, color, txt, size, font }) {
   gCtx.strokeStyle = color.strokeColor;
   gCtx.fillText(txt, x, y);
   gCtx.strokeText(txt, x, y);
+  // Set x position
+  const meme = getMeme();
+  const { lineHeight, lineWidth } = textSize(
+    gMeme.lines.at(gMeme.selectedLineIdx).txt
+  );
+  setLinePosX(gCanvas, gMeme.selectedLineIdx, lineWidth, lineHeight);
 }
 
 function drawImage(img) {
@@ -94,8 +99,19 @@ function onSetStrokeClr(color) {
   setStrokeClr(color);
   renderMeme();
 }
+
+function onSetFontFamily(font) {
+  setFontFamily(font);
+  renderMeme();
+}
+
 function onSetFillClr(color) {
   setFillClr(color);
+  renderMeme();
+}
+
+function onSetTextPos(bringDown) {
+  setTextPos(bringDown);
   renderMeme();
 }
 
@@ -106,6 +122,17 @@ function onSetFontSize(toIncrease) {
 
 function onDeleteLine() {
   deleteLine();
+  renderMeme();
+}
+
+function onSetAlignment(align) {
+  console.log(align);
+  setAlignment(align);
+  const meme = getMeme();
+  const { lineHeight, lineWidth } = textSize(
+    gMeme.lines.at(gMeme.selectedLineIdx).txt
+  );
+  setLinePosX(gCanvas, gMeme.selectedLineIdx, lineWidth, lineHeight);
   renderMeme();
 }
 

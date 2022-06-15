@@ -21,7 +21,21 @@ const gMeme = {
   font: 'Impact',
 };
 
-function _createImg() {}
+function _createImgs() {
+  // TODO: write functionallity
+}
+
+function setFontFamily(font) {
+  gMeme.font = font;
+}
+
+function setTextPos(bringDown) {
+  gMeme.lines[gMeme.selectedLineIdx].y += bringDown * 20 - 10;
+}
+
+function setAlignment(align) {
+  gMeme.lines[gMeme.selectedLineIdx].align = align;
+}
 
 function addLine() {
   gMeme.selectedLineIdx++;
@@ -60,8 +74,8 @@ function setLinePosX(canvas, line, width) {
   const align = gMeme.lines.at(line).align;
   const pos = gMeme.lines.at(line);
   if (align === 'center') pos.x = (canvas.width - width) / 2;
-  else if (align === 'left') pos.x = 20;
-  else pos.x = canvas.width - 20 - width;
+  else if (align === 'left') pos.x = 0;
+  else pos.x = canvas.width - width;
 }
 
 function setLinePosY(canvas, line, height) {
