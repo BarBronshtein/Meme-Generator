@@ -26,7 +26,7 @@ function onSetTextPos() {}
 
 function onSetLineTxt(txt) {
   const meme = getMeme();
-
+  if (!meme.lines.length) addLine();
   setLineTxt(txt, meme.selectedLineIdx);
   // Set text font and size
   // Get text width and height
@@ -49,8 +49,10 @@ function onDeleteLine() {}
 
 function drawText({ x, y, color, txt, size, font }) {
   gCtx.font = `${size}px ${font}`;
-  gCtx.fillStyle = color;
+  gCtx.fillStyle = color.fillColor;
+  gCtx.strokeStyle = color.strokeColor;
   gCtx.fillText(txt, x, y);
+  gCtx.strokeText(txt, x, y);
 }
 
 function drawImage(img) {
@@ -69,13 +71,22 @@ function onChangeLine() {
   changeLine();
 }
 
-function onSetClr(color) {
-  setColor(color);
+function onSetStrokeClr(color) {
+  setStrokeClr(color);
+  renderMeme();
+}
+function onSetFillClr(color) {
+  setFillClr(color);
   renderMeme();
 }
 
 function onSetFontSize(toIncrease) {
   setFontSize(toIncrease);
+  renderMeme();
+}
+
+function onDeleteLine() {
+  deleteLine();
   renderMeme();
 }
 

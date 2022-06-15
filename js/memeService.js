@@ -13,7 +13,7 @@ const gMeme = {
       txt: 'Write Your Meme',
       size: 25,
       align: 'center',
-      color: '#fff',
+      color: { fillColor: '#fff', strokeColor: '#000' },
       x: 100,
       y: 20,
     },
@@ -30,7 +30,7 @@ function addLine() {
     txt: 'Write Your Meme',
     size: 25,
     align: 'center',
-    color: '#fff',
+    color: { fillColor: '#fff', strokeColor: '#000' },
     x: 0,
     y: 0,
   };
@@ -49,8 +49,12 @@ function getMeme() {
   return gMeme;
 }
 
-function changeLine() {}
-function deleteLine() {}
+function deleteLine() {
+  gMeme.lines.length && gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+  gMeme.selectedLineIdx > -1 ? gMeme.selectedLineIdx-- : '';
+  if (gMeme.selectedLineIdx > 0 && gMeme.lines.length)
+    gMeme.selectedLineIdx = gMeme.lines.length - 1;
+}
 
 function setLinePosX(canvas, line, width) {
   const align = gMeme.lines.at(line).align;
@@ -92,6 +96,9 @@ function setFontSize(toIncrease) {
   // If increase is false decrease by one otherwise increment by 1
   gMeme.lines.at(gMeme.selectedLineIdx).size += toIncrease * 2 - 1;
 }
-function setColor(color) {
-  gMeme.lines.at(gMeme.selectedLineIdx).color = color;
+function setStrokeClr(color) {
+  gMeme.lines.at(gMeme.selectedLineIdx).color.strokeColor = color;
+}
+function setFillClr(color) {
+  gMeme.lines.at(gMeme.selectedLineIdx).color.fillColor = color;
 }
