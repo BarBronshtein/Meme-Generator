@@ -2,7 +2,6 @@
 
 let gCanvas;
 let gCtx;
-
 function onInit() {
   renderGallery();
   gCanvas = document.querySelector('.canvas');
@@ -19,9 +18,17 @@ function renderMeme() {
   img.onload = () => {
     drawImage(img);
     meme.lines.forEach(drawText);
+    drawRectOnSelectedLine();
   };
 }
 
+function drawRectOnSelectedLine() {
+  const meme = getMeme();
+  const selectedLine = meme.lines[meme.selectedLineIdx];
+  if (!selectedLine || !selectedLine.txt) return;
+  const { lineHeight, lineWidth } = textSize(selectedLine.txt);
+  gCtx.strokeRect(selectedLine.x, selectedLine.y, lineWidth, -lineHeight);
+}
 function onSetTextPos() {}
 
 function onSetLineTxt(txt) {
@@ -43,11 +50,8 @@ function textSize(txt) {
   return { lineHeight, lineWidth };
 }
 
-function onChangeLine() {}
-function onAddLine() {}
-function onDeleteLine() {}
-
 function drawText({ x, y, color, txt, size, font }) {
+  // Drawing text
   gCtx.font = `${size}px ${font}`;
   gCtx.fillStyle = color.fillColor;
   gCtx.strokeStyle = color.strokeColor;
@@ -65,10 +69,25 @@ function onAddLine() {
   const { lineHeight, lineWidth } = textSize(gMeme.lines.at(newLine).txt);
   setLinePos(gCanvas, newLine, lineWidth, lineHeight);
   renderMeme();
+  const elTxt = document.querySelector('[name=text]');
+  elTxt.value = '';
 }
 
 function onChangeLine() {
   changeLine();
+  focus();
+  renderMeme();
+}
+function focus() {
+  const elTxt = document.querySelector('[name=text]');
+  elTxt.focus();
+  const meme = getMeme();
+
+  if (meme.lines.at(meme.selectedLineIdx).txt !== 'Write Your Meme')
+    elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
+
+  if (!elTxt.value) return;
+  elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
 }
 
 function onSetStrokeClr(color) {

@@ -89,7 +89,6 @@ function changeLine() {
     gMeme.selectedLineIdx === gMeme.lines.length - 1
       ? 0
       : gMeme.selectedLineIdx + 1;
-  console.log(gMeme.selectedLineIdx);
 }
 
 function setFontSize(toIncrease) {
