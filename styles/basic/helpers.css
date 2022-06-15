@@ -2,12 +2,23 @@
   display: flex;
 }
 
+.flex.flex-column {
+  flex-direction: column;
+}
+
 .flex.align-center {
   align-items: center;
 }
 
 .flex.space-between {
   justify-content: space-between;
+}
+
+.grid {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, 250px);
 }
 
 .clean-list {
@@ -27,4 +38,8 @@
 }
 .p4 {
   padding: 20px;
+}
+
+.hidden {
+  display: none;
 }
