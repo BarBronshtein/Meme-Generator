@@ -9,7 +9,7 @@
   </head>
   <body onload="onInit()">
     <header class="main-header flex space-between align-center">
-      <div class="main-logo p3">LOGO</div>
+      <div class="main-logo p3"></div>
       <ul class="main-nav clean-list flex">
         <li onclick="showGallery()">Gallery</li>
         <li>Memess</li>
@@ -42,53 +42,81 @@
               ↓
             </button>
             <button onclick="onChangeLine()" class="btn change-line-btn">
-              SwitchLine
+              <img
+                src="/img/ICONS/up-and-down-opposite-double-arrows-side-by-side.png"
+                alt=""
+              />
             </button>
-            <button onclick="onAddLine()" class="btn add-line-btn">Add</button>
+            <button onclick="onAddLine()" class="btn add-line-btn">
+              <img src="/img/ICONS/add.png" alt="" />
+            </button>
             <button onclick="onDeleteLine()" class="btn trash-btn">
-              Delete
+              <img src="/img/ICONS/trash.png" alt="" />
             </button>
           </div>
           <div class="secondary-features">
             <button onclick="onSetFontSize(true)" class="btn increase-fs">
-              A+
+              <img src="/img/ICONS/increase-font-icon.png" alt="" />
             </button>
             <button onclick="onSetFontSize(false)" class="btn decrease-fs">
-              A-
+              <img src="/img/ICONS/decrease-font-icon.png" alt="" />
             </button>
-            <input
-              onchange="onSetStrokeClr(this.value)"
-              class="btn change-stroke-clr"
-              type="color"
-              name="color"
-            />
-            <input
-              onchange="onSetFillClr(this.value)"
-              class="btn change-stroke-clr"
-              type="color"
-              name="color"
-              value="#ffffff"
-            />
+            <button class="btn change-stroke-btn">
+              <input
+                onchange="onSetStrokeClr(this.value)"
+                class="btn change-stroke-clr"
+                type="color"
+                name="color"
+              />
+              <img
+                class="btn-stroke-img"
+                src="/img/ICONS/text-stroke.png"
+                alt=""
+              />
+            </button>
+            <button class="btn change-fill-btn">
+              <input
+                onchange="onSetFillClr(this.value)"
+                class="btn change-fill-clr"
+                type="color"
+                name="color"
+                value="#ffffff"
+              />
+              <img
+                class="btn-fill-img"
+                src="/img/ICONS/paint-board-and-brush.png"
+                alt=""
+              />
+            </button>
             <button onclick="onSetAlignment('left')" class="btn btn-align-left">
-              left
+              <img src="img/ICONS/align-to-left.png" alt="" />
             </button>
             <button
               onclick="onSetAlignment('center')"
               class="btn btn-align-center"
             >
-              ☰
+              <img src="img/ICONS/center-text-alignment.png" alt="" />
             </button>
             <button
               onclick="onSetAlignment('right')"
               class="btn btn-align-right"
             >
-              right
+              <img src="img/ICONS/align-to-right.png" alt="" />
             </button>
           </div>
           <div class="emojis"></div>
           <div class="additional">
-            <button class="btn share">Share</button>
-            <a class="btn download hidden" download="meme.jpg">Download</a>
+            <a
+              href=""
+              onclick="downloadImg(this)"
+              class="btn download"
+              download="meme.jpg"
+              >Download</a
+            >
+
+            <p class="user-msg hidden"></p>
+            <button onclick="uploadImg()" class="btn share">Share</button>
+            <div class="share-container"></div>
           </div>
         </div>
       </section>

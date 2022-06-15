@@ -115,3 +115,23 @@ function setStrokeClr(color) {
 function setFillClr(color) {
   gMeme.lines.at(gMeme.selectedLineIdx).color.fillColor = color;
 }
+
+function doUploadImg(imgDataUrl, onSuccess) {
+  //Pack the image for delivery
+  const formData = new FormData();
+  formData.append('img', imgDataUrl);
+  //Send a post req with the image to the server
+  fetch('//ca-upload.com/here/upload.php', {
+    method: 'POST',
+    body: formData,
+  }) //Gets the result and extract the text/ url from it
+    .then(res => res.text())
+    .then(url => {
+      console.log('Got back live url:', url);
+      //Pass the url we got to the callBack func onSuccess, that will create the link to facebook
+      onSuccess(url);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}

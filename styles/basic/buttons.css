@@ -1,0 +1,23 @@
+.btn {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background-color: white;
+}
+
+.btn.change-stroke-btn,
+.btn.change-fill-btn {
+  position: relative;
+}
+
+.btn-stroke-img,
+.btn-fill-img {
+  position: absolute;
+  left: 0;
+}
+
+.btn input {
+  position: relative;
+  z-index: 10;
+  opacity: 0;
+}

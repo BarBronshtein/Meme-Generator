@@ -9,7 +9,9 @@ function onInit() {
   renderMeme();
 }
 
-function renderMeme() {
+function renderMeme(toRenderRect = true) {
+  // We dont render rectangle around selected line only when the user uploads the canvas or downloads it
+
   //Draw the meme on the canvas
   const meme = getMeme();
   const memeImg = getImgById(meme.selectedImgId);
@@ -18,7 +20,7 @@ function renderMeme() {
   img.onload = () => {
     drawImage(img);
     meme.lines.forEach(drawText);
-    drawRectOnSelectedLine();
+    toRenderRect && drawRectOnSelectedLine();
   };
 }
 
@@ -88,9 +90,8 @@ function focus() {
   elTxt.focus();
   const meme = getMeme();
 
-  if (meme.lines.at(meme.selectedLineIdx).txt !== 'Write Your Meme')
-    elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
-
+  if (meme.lines.at(meme.selectedLineIdx).txt === 'Write Your Meme')
+    elTxt.value = '';
   if (!elTxt.value) return;
   elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
 }
@@ -139,5 +140,36 @@ function onSetAlignment(align) {
 function showGallery() {
   document.querySelector('.meme-gallery').classList.remove('hidden');
   document.querySelector('.meme-editor').classList.add('hidden');
+  document.querySelector('.share-container').innerHTML = '';
   renderMeme();
+}
+
+function downloadImg(elLink) {
+  renderMeme(false);
+  const imgContent = gCanvas.toDataURL('image/jpeg'); // image/jpeg the default format
+  elLink.href = imgContent;
+}
+
+// Upload canvas img
+function uploadImg() {
+  // Render image again without rectangle around selected line
+  renderMeme(false);
+  const imgDataUrl = gCanvas.toDataURL('image/jpeg'); // Gets the canvas content as an image format
+
+  // A function to be called if request succeeds
+  function onSuccess(uploadedImgUrl) {
+    //Encode the instance of certain characters in the url
+    const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl);
+    console.log(encodedUploadedImgUrl);
+    document.querySelector(
+      '.user-msg'
+    ).innerText = `Your photo is available here: ${uploadedImgUrl}`;
+    //Create a link that on click will make a post in facebook with the image we uploaded
+    document.querySelector('.share-container').innerHTML = `
+        <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">
+           Share   
+        </a>`;
+  }
+  //Send the image to the server
+  doUploadImg(imgDataUrl, onSuccess);
 }
