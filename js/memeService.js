@@ -23,6 +23,20 @@ const gMeme = {
 
 function _createImg() {}
 
+function addLine() {
+  gMeme.selectedLineIdx++;
+
+  gMeme.lines[gMeme.selectedLineIdx] = {
+    txt: 'Write Your Meme',
+    size: 25,
+    align: 'center',
+    color: '#fff',
+    x: 0,
+    y: 0,
+  };
+  return gMeme;
+}
+
 function getImgs() {
   return gImgs;
 }
@@ -36,18 +50,21 @@ function getMeme() {
 }
 
 function changeLine() {}
-function addLine() {}
 function deleteLine() {}
 
-function setLinePosX(canvas, line, width, align) {
-  if (align === 'center') gMeme.lines.at(line).x = (canvas.width - width) / 2;
-  else if (align === 'left') gMeme.lines.at(line).x = 20;
-  else gMeme.lines.at(line).x = canvas.width - 20 - width;
+function setLinePosX(canvas, line, width) {
+  const align = gMeme.lines.at(line).align;
+  const pos = gMeme.lines.at(line);
+  if (align === 'center') pos.x = (canvas.width - width) / 2;
+  else if (align === 'left') pos.x = 20;
+  else pos.x = canvas.width - 20 - width;
 }
+
 function setLinePosY(canvas, line, height) {
-  if (!line) gMeme.lines.at(line).y = 20 + height;
-  else if (line > 1) gMeme.lines.at(line).y = canvas.height - 20;
-  else gMeme.lines.at(line).y = (canvas.height - height) / 2;
+  const pos = gMeme.lines.at(line);
+  if (!line) pos.y = 20 + height;
+  else if (line === 1) pos.y = canvas.height - 20;
+  else pos.y = (canvas.height - height) / 2;
 }
 
 function setLinePos(canvas, line, width, height, align) {
@@ -62,3 +79,13 @@ function setLineTxt(txt, line) {
 function setImg(id) {
   gMeme.selectedImgId = +id;
 }
+
+function changeLine() {
+  gMeme.selectedLineIdx =
+    gMeme.selectedLineIdx === gMeme.lines.length - 1
+      ? 0
+      : gMeme.selectedLineIdx + 1;
+  console.log(gMeme.selectedLineIdx);
+}
+
+function setFontSize() {}

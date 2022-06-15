@@ -30,19 +30,17 @@ function onSetLineTxt(txt) {
   setLineTxt(txt, meme.selectedLineIdx);
   // Set text font and size
   // Get text width and height
-  const lineWidth = gCtx.measureText(txt).width;
-  const lineHeight = gCtx.measureText('M').width;
+  const { lineHeight, lineWidth } = textSize(txt);
   // Set line pos
-  setLinePos(
-    gCanvas,
-    meme.selectedLineIdx,
-    lineWidth,
-    lineHeight,
-    meme.lines.at(meme.selectedLineIdx).align
-  );
-
+  setLinePos(gCanvas, meme.selectedLineIdx, lineWidth, lineHeight);
   // Draw text on canvas
   renderMeme();
+}
+
+function textSize(txt) {
+  const lineWidth = gCtx.measureText(txt).width;
+  const lineHeight = gCtx.measureText('M').width;
+  return { lineHeight, lineWidth };
 }
 
 function onChangeLine() {}
@@ -59,4 +57,15 @@ function drawImage(img) {
   gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
 }
 
-// function
+function onAddLine() {
+  const meme = addLine();
+  const newLine = meme.selectedLineIdx;
+  console.log(newLine);
+  const { lineHeight, lineWidth } = textSize(gMeme.lines.at(newLine).txt);
+  setLinePos(gCanvas, newLine, lineWidth, lineHeight);
+  renderMeme();
+}
+
+function onChangeLine() {
+  changeLine();
+}

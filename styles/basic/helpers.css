@@ -16,9 +16,6 @@
 
 .grid {
   display: grid;
-  grid-auto-flow: dense;
-  grid-gap: 20px;
-  grid-template-columns: repeat(auto-fit, 250px);
 }
 
 .clean-list {

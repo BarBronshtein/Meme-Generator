@@ -35,12 +35,17 @@
             placeholder="Write Your Meme..."
           />
           <div class="main-features">
-            <button
-              onclick="onChangeLine()"
-              class="btn change-line-btn"
-            ></button>
-            <button onclick="onAddLine()" class="btn add-line-btn"></button>
+            <button onclick="onChangeLine()" class="btn change-line-btn">
+              SwitchLine
+            </button>
+            <button onclick="onAddLine()" class="btn add-line-btn">Add</button>
             <button onclick="onDeleteLine()" class="btn trash-btn"></button>
+            <input
+              onclick="onSetClr(this.value)"
+              class="btn change-clr"
+              type="color"
+              name="color"
+            />
           </div>
           <div class="emojis"></div>
         </div>
