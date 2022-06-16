@@ -5,7 +5,30 @@ let gImgs = [
   { id: 1, url: 'img/meme-imgs/1.jpg' },
   { id: 2, url: 'img/meme-imgs/2.jpg' },
 ];
-const gMeme = {
+const gEmojis = [
+  '🍕',
+  '🥑',
+  '😶‍🌫️',
+  '☠️',
+  '👺',
+  '🤡',
+  '🐸',
+  '👅',
+  '🦷',
+  '👁️',
+  '🗣️',
+  '🎁',
+  '💍',
+  '🥇',
+  '🥊',
+];
+const EMOJI_PER_PAGE = 3;
+const gPages = {
+  curPage: 0,
+  numPages: 4,
+};
+
+let gMeme = {
   selectedImgId: 1,
   selectedLineIdx: 0,
   lines: [
@@ -13,7 +36,7 @@ const gMeme = {
       txt: 'Write Your Meme',
       size: 25,
       align: 'center',
-      color: { fillColor: '#fff', strokeColor: '#000' },
+      colors: { fillColor: '#fff', strokeColor: '#000' },
       x: 100,
       y: 35,
       isDrag: false,
@@ -22,8 +45,24 @@ const gMeme = {
   font: 'Impact',
 };
 
+_createImgs();
+
 function _createImgs() {
   // TODO: write functionallity
+  const imgs = [];
+  for (let i = 1; i < 19; i++) {
+    const img = _createImg(i);
+    imgs.push(img);
+  }
+  gImgs = imgs;
+}
+
+function _createImg(i) {
+  return {
+    id: makeId(),
+    url: `img/meme-imgs/${i}.jpg`,
+    categories: ['funny'], // TODO:replace with a function that create random categories based on a stock of categories
+  };
 }
 
 function setFontFamily(font) {
@@ -41,16 +80,15 @@ function setAlignment(align) {
 function addLine() {
   gMeme.selectedLineIdx++;
 
-  gMeme.lines[gMeme.selectedLineIdx] = {
+  return (gMeme.lines[gMeme.selectedLineIdx] = {
     txt: 'Write Your Meme',
     size: 25,
     align: 'center',
-    color: { fillColor: '#fff', strokeColor: '#000' },
+    colors: { fillColor: '#fff', strokeColor: '#000' },
     x: 0,
     y: 20,
     isDrag: false,
-  };
-  return gMeme;
+  });
 }
 
 function getImgs() {
@@ -82,8 +120,11 @@ function setLinePosX(canvas, line, width) {
 
 function setLinePosY(canvas, line, height) {
   const pos = gMeme.lines.at(line);
+  // First line
   if (!line) pos.y = 20 + height;
+  // Second line
   else if (line === 1) pos.y = canvas.height - 20;
+  // Third and above
   else pos.y = (canvas.height - height) / 2;
 }
 
@@ -98,7 +139,7 @@ function setLineTxt(txt, line) {
 }
 
 function setImg(id) {
-  gMeme.selectedImgId = +id;
+  gMeme.selectedImgId = id;
 }
 
 function changeLine() {
@@ -109,14 +150,15 @@ function changeLine() {
 }
 
 function setFontSize(toIncrease) {
-  // If increase is false decrease by one otherwise increment by 1
+  // true value equals 1 in js and false equals to 0
+  // The ratio need to be 2:1 to increase and decrease by the same value
   gMeme.lines.at(gMeme.selectedLineIdx).size += toIncrease * 2 - 1;
 }
 function setStrokeClr(color) {
-  gMeme.lines.at(gMeme.selectedLineIdx).color.strokeColor = color;
+  gMeme.lines.at(gMeme.selectedLineIdx).colors.strokeColor = color;
 }
 function setFillClr(color) {
-  gMeme.lines.at(gMeme.selectedLineIdx).color.fillColor = color;
+  gMeme.lines.at(gMeme.selectedLineIdx).colors.fillColor = color;
 }
 
 function setLineHeight(line, height) {
@@ -170,4 +212,41 @@ function moveLine(dx, dy) {
   const pos = gMeme.lines[gMeme.selectedLineIdx];
   pos.x += dx;
   pos.y += dy;
+}
+
+function resetMeme() {
+  gMeme = {
+    selectedImgId: 1,
+    selectedLineIdx: 0,
+    lines: [
+      {
+        txt: 'Write Your Meme',
+        size: 25,
+        align: 'center',
+        colors: { fillColor: '#fff', strokeColor: '#000' },
+        x: 100,
+        y: 35,
+        isDrag: false,
+      },
+    ],
+    font: 'Impact',
+  };
+}
+
+function getEmojis() {
+  const pageOn = gPages.curPage * EMOJI_PER_PAGE;
+  return gEmojis.slice(pageOn, pageOn + EMOJI_PER_PAGE);
+}
+
+function moveTo(toNextPage) {
+  // Last page going forward
+  if (toNextPage && gPages.curPage === gPages.numPages)
+    return (gPages.curPage = 0);
+  // other going forward
+  if (toNextPage) return gPages.curPage++;
+  // First page going backwards
+  if (!toNextPage && gPages.curPage === 0)
+    return (gPages.curPage = gPages.numPages);
+  // other going backwards
+  gPages.curPage--;
 }

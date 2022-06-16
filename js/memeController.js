@@ -8,14 +8,12 @@ function onInit() {
   renderGallery();
   gCanvas = document.querySelector('.canvas');
   gCtx = gCanvas.getContext('2d');
-  renderMeme();
   addMouseListeners();
   addTouchListeners();
 }
 
 function renderMeme(toRenderRect = true) {
   // We dont render rectangle around selected line only when the user uploads the canvas or downloads it
-
   //Draw the meme on the canvas
   const meme = getMeme();
   const memeImg = getImgById(meme.selectedImgId);
@@ -54,8 +52,6 @@ function onSetLineTxt(txt) {
     txt = 'Write Your Meme';
     isNewLine = true;
   }
-
-  const { lineWidth } = textSize(txt);
   setLineTxt(txt, meme.selectedLineIdx);
 
   renderMeme();
@@ -67,16 +63,13 @@ function textSize(txt) {
   return { lineHeight, lineWidth };
 }
 
-function drawText({ x, y, color, txt, size, font }) {
+function drawText({ x, y, colors, txt, size, font }) {
   // Drawing text
   gCtx.font = `${size}px ${font}`;
-  gCtx.fillStyle = color.fillColor;
-  gCtx.strokeStyle = color.strokeColor;
+  gCtx.fillStyle = colors.fillColor;
+  gCtx.strokeStyle = colors.strokeColor;
   gCtx.fillText(txt, x, y);
   gCtx.strokeText(txt, x, y);
-  // Set x position
-  const meme = getMeme();
-  const { lineWidth } = textSize(meme.lines.at(meme.selectedLineIdx).txt);
 }
 
 function drawImage(img) {
@@ -84,13 +77,16 @@ function drawImage(img) {
 }
 
 function onAddLine() {
-  const meme = addLine();
-  const newLine = meme.selectedLineIdx;
-  const { lineWidth, lineHeight } = textSize(meme.lines.at(newLine).txt);
+  const newLine = addLine();
+  const { lineWidth, lineHeight } = textSize(newLine.txt);
   setNewLinePos(gCanvas, newLine, lineWidth, lineHeight);
   renderMeme();
+  setInputValueTo();
+}
+
+function setInputValueTo(value = '') {
   const elTxt = document.querySelector('[name=text]');
-  elTxt.value = '';
+  elTxt.value = value;
 }
 
 function onChangeLine() {
@@ -152,7 +148,7 @@ function showGallery() {
   document.querySelector('.meme-gallery').classList.remove('hidden');
   document.querySelector('.meme-editor').classList.add('hidden');
   document.querySelector('.share-container').innerHTML = '';
-  renderMeme();
+  resetMeme();
 }
 
 function downloadImg(elLink) {
@@ -196,14 +192,13 @@ function setGrabOn(ev) {
 }
 
 function setGrabOff() {
-  // When user press mouse up touch up or exits canvas territory drops text if grabbed
   setLineDrag(false);
 }
 
 function draw(ev) {
   const pos = getEvPos(ev);
   const meme = getMeme();
-  if (!isLineClicked(pos) || !meme.lines[meme.selectedLineIdx].isDrag) return;
+  if (!meme.lines[meme.selectedLineIdx].isDrag) return;
   const dx = pos.x - gStartPos.x;
   const dy = pos.y - gStartPos.y;
   moveLine(dx, dy);
@@ -242,4 +237,30 @@ function getEvPos(ev) {
     };
   }
   return pos;
+}
+
+function onCreateSticker(emoji) {
+  const newLine = addLine();
+  newLine.txt = emoji;
+  const { lineWidth, lineHeight } = textSize(newLine.txt);
+  setNewLinePos(gCanvas, newLine, lineWidth, lineHeight);
+  renderMeme();
+  setInputValueTo(emoji);
+}
+
+function renderEmojis() {
+  const emojis = getEmojis();
+  let html =
+    '<span class="btn pagination-btn" onclick="onMoveTo(false)"><</span>';
+  emojis.forEach(
+    emoji =>
+      (html += `<span onclick="onCreateSticker(this.textContent)" class="btn emoji-btn">${emoji}</span>`)
+  );
+  html += '<span class="btn pagination-btn" onclick="onMoveTo(true)">></span>';
+  document.querySelector('.emojis').innerHTML = html;
+}
+
+function onMoveTo(toNextPage) {
+  moveTo(toNextPage);
+  renderEmojis();
 }
