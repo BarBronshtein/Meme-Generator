@@ -5,6 +5,7 @@ let gImgs = [
   { id: 1, url: 'img/meme-imgs/1.jpg' },
   { id: 2, url: 'img/meme-imgs/2.jpg' },
 ];
+const gFilterBy = { txt: '' };
 let gSavedMemes = [];
 const gEmojis = [
   '🍕',
@@ -94,7 +95,10 @@ function addLine() {
 }
 
 function getImgs() {
-  return gImgs;
+  const imgs = gImgs.filter(img =>
+    img.categories.every(c => c.includes(gFilterBy.txt))
+  );
+  return imgs;
 }
 
 function getImgById(id) {
@@ -272,4 +276,16 @@ function setMemeToCurMeme(id) {
   const meme = gSavedMemes.find(meme => meme.id === id);
   if (!meme) return;
   gMeme = meme;
+}
+
+function setFilterBy(txt) {
+  gFilterBy.txt = txt;
+}
+
+function getSearchKeySearchCountMap() {
+  return gKeywordSearchCountMap;
+}
+
+function growKeySearchWord(key) {
+  return gKeywordSearchCountMap[key]++;
 }

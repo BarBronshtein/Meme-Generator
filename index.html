@@ -17,7 +17,26 @@
       </ul>
     </header>
     <main class="meme-container">
-      <section class="meme-gallery grid"></section>
+      <section class="meme-gallery flex flex-column">
+        <div class="search-bar">
+          <input
+            oninput="onSetFilterBy(this.value)"
+            type="text"
+            name="filter"
+            list="categories"
+            placeholder="search by category..."
+          />
+          <datalist id="categories">
+            <option value="funny"></option>
+            <option value="political"></option>
+            <option value="animals"></option>
+            <option value="baby"></option>
+            <option value="cute"></option>
+          </datalist>
+          <div class="key-search-words"></div>
+        </div>
+        <div class="img-container grid"></div>
+      </section>
       <section class="meme-editor flex hidden">
         <div class="canvas-container">
           <canvas class="canvas" width="500" height="500"></canvas>
@@ -123,6 +142,7 @@
       </section>
       <section class="saved-memes meme-gallery grid hidden"></section>
     </main>
+    <footer class="main-footer"></footer>
     <script src="js/services/service-storage.js"></script>
     <script src="js/services/service-utils.js"></script>
     <script src="js/services/memeService.js"></script>
