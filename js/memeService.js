@@ -15,7 +15,8 @@ const gMeme = {
       align: 'center',
       color: { fillColor: '#fff', strokeColor: '#000' },
       x: 100,
-      y: 20,
+      y: 35,
+      isDrag: false,
     },
   ],
   font: 'Impact',
@@ -47,6 +48,7 @@ function addLine() {
     color: { fillColor: '#fff', strokeColor: '#000' },
     x: 0,
     y: 20,
+    isDrag: false,
   };
   return gMeme;
 }
@@ -85,16 +87,14 @@ function setLinePosY(canvas, line, height) {
   else pos.y = (canvas.height - height) / 2;
 }
 
-function setLinePos(canvas, line, width, height, align) {
-  setLinePosX(canvas, line, width, align);
+function setNewLinePos(canvas, line, width, height) {
+  // Sets position in creation of a new line or at alignment change
+  setLinePosX(canvas, line, width);
   setLinePosY(canvas, line, height);
 }
 
-function setLineTxt(txt, line, canvas, width, height, addNewLine) {
+function setLineTxt(txt, line) {
   gMeme.lines.at(line).txt = txt;
-  if (addNewLine)
-    setLinePos(canvas, line, width, height, gMeme.lines[line].align);
-  else setLinePosX(canvas, line, width);
 }
 
 function setImg(id) {
@@ -119,6 +119,13 @@ function setFillClr(color) {
   gMeme.lines.at(gMeme.selectedLineIdx).color.fillColor = color;
 }
 
+function setLineHeight(line, height) {
+  line.height = height;
+}
+function setLineWidth(line, width) {
+  line.width = width;
+}
+
 function doUploadImg(imgDataUrl, onSuccess) {
   //Pack the image for delivery
   const formData = new FormData();
@@ -137,4 +144,30 @@ function doUploadImg(imgDataUrl, onSuccess) {
     .catch(err => {
       console.error(err);
     });
+}
+
+function isLineClicked(clickedPos) {
+  const { x: clickedX, y: clickedY } = clickedPos;
+  const idx = gMeme.lines.findIndex(
+    line =>
+      clickedX >= line.x &&
+      clickedX <= line.x + line.width &&
+      clickedY >= line.y - line.height &&
+      clickedY <= line.y
+  );
+  // If no matches exit
+  if (idx === -1) return false;
+  // Set selected line to matched line index
+  gMeme.selectedLineIdx = idx;
+  return true;
+}
+
+function setLineDrag(isDrag) {
+  gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag;
+}
+
+function moveLine(dx, dy) {
+  const pos = gMeme.lines[gMeme.selectedLineIdx];
+  pos.x += dx;
+  pos.y += dy;
 }

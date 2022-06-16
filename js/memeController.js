@@ -2,11 +2,15 @@
 
 let gCanvas;
 let gCtx;
+let gStartPos;
+const gTouchEvs = ['touchstart', 'touchend', 'touchmove'];
 function onInit() {
   renderGallery();
   gCanvas = document.querySelector('.canvas');
   gCtx = gCanvas.getContext('2d');
   renderMeme();
+  addMouseListeners();
+  addTouchListeners();
 }
 
 function renderMeme(toRenderRect = true) {
@@ -29,7 +33,9 @@ function drawRectOnSelectedLine() {
   const meme = getMeme();
   const selectedLine = meme.lines[meme.selectedLineIdx];
   if (!selectedLine || !selectedLine.txt) return;
-  const { lineHeight, lineWidth } = textSize(selectedLine.txt);
+  const { lineWidth, lineHeight } = textSize(selectedLine.txt);
+  setLineWidth(selectedLine, lineWidth);
+  setLineHeight(selectedLine, lineHeight);
   gCtx.strokeRect(
     selectedLine.x - RECT_PADDING / 2,
     selectedLine.y,
@@ -39,13 +45,20 @@ function drawRectOnSelectedLine() {
 }
 
 function onSetLineTxt(txt) {
+  let isNewLine = false;
   const meme = getMeme();
   if (!meme.lines.length) addLine();
   // If text user put is empty show write your meme
   // else calculate txt
-  txt = txt ? txt : 'write Your Name';
-  const { lineWidth, lineHeight } = textSize(txt);
-  setLineTxt(txt, meme.selectedLineIdx, gCanvas, lineWidth, lineHeight, true);
+  if (!txt) {
+    txt = 'Write Your Meme';
+    isNewLine = true;
+  }
+
+  const { lineWidth } = textSize(txt);
+  setLineTxt(txt, meme.selectedLineIdx);
+  // setLinePosX(gCanvas, meme.selectedLineIdx, lineWidth);
+
   renderMeme();
 }
 
@@ -64,10 +77,8 @@ function drawText({ x, y, color, txt, size, font }) {
   gCtx.strokeText(txt, x, y);
   // Set x position
   const meme = getMeme();
-  const { lineHeight, lineWidth } = textSize(
-    gMeme.lines.at(gMeme.selectedLineIdx).txt
-  );
-  setLinePosX(gCanvas, gMeme.selectedLineIdx, lineWidth, lineHeight);
+  const { lineWidth } = textSize(meme.lines.at(meme.selectedLineIdx).txt);
+  // setLinePosX(gCanvas, meme.selectedLineIdx, lineWidth);
 }
 
 function drawImage(img) {
@@ -77,8 +88,8 @@ function drawImage(img) {
 function onAddLine() {
   const meme = addLine();
   const newLine = meme.selectedLineIdx;
-  const { lineHeight, lineWidth } = textSize(gMeme.lines.at(newLine).txt);
-  setLinePos(gCanvas, newLine, lineWidth, lineHeight);
+  const { lineWidth, lineHeight } = textSize(meme.lines.at(newLine).txt);
+  setNewLinePos(gCanvas, newLine, lineWidth, lineHeight);
   renderMeme();
   const elTxt = document.querySelector('[name=text]');
   elTxt.value = '';
@@ -94,11 +105,11 @@ function focus() {
   elTxt.focus();
   const meme = getMeme();
 
-  if (meme.lines.at(meme.selectedLineIdx).txt === 'Write Your Meme') {
+  elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
+
+  if (elTxt.value === 'Write Your Meme') {
     elTxt.value = '';
   }
-  if (!elTxt.value) return;
-  elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
 }
 
 function onSetStrokeClr(color) {
@@ -132,13 +143,10 @@ function onDeleteLine() {
 }
 
 function onSetAlignment(align) {
-  console.log(align);
   setAlignment(align);
   const meme = getMeme();
-  const { lineHeight, lineWidth } = textSize(
-    gMeme.lines.at(gMeme.selectedLineIdx).txt
-  );
-  setLinePosX(gCanvas, gMeme.selectedLineIdx, lineWidth, lineHeight);
+  const { lineWidth } = textSize(meme.lines.at(meme.selectedLineIdx).txt);
+  setLinePosX(gCanvas, meme.selectedLineIdx, lineWidth);
   renderMeme();
 }
 
@@ -177,4 +185,63 @@ function uploadImg() {
   }
   //Send the image to the server
   doUploadImg(imgDataUrl, onSuccess);
+}
+
+function setGrabOn(ev) {
+  // When user press mouse down or touch down canvas grabs text if its there
+  // TODO:Find text to drag
+  const pos = getEvPos(ev);
+  if (!isLineClicked(pos)) return;
+  setLineDrag(true);
+  gStartPos = pos;
+  renderMeme();
+}
+
+function setGrabOff() {
+  // When user press mouse up touch up or exits canvas territory drops text if grabbed
+  setLineDrag(false);
+}
+
+function draw(ev) {
+  const pos = getEvPos(ev);
+  const meme = getMeme();
+  if (!isLineClicked(pos) || !meme.lines[meme.selectedLineIdx].isDrag) return;
+  const dx = pos.x - gStartPos.x;
+  const dy = pos.y - gStartPos.y;
+  moveLine(dx, dy);
+  gStartPos = pos;
+  renderMeme();
+}
+
+function addMouseListeners() {
+  gCanvas.addEventListener('mousedown', setGrabOn);
+  gCanvas.addEventListener('mousemove', draw);
+  gCanvas.addEventListener('mouseup', setGrabOff);
+}
+
+function addTouchListeners() {
+  gCanvas.addEventListener('touchstart', setGrabOn);
+  gCanvas.addEventListener('touchmove', draw);
+  gCanvas.addEventListener('touchend', setGrabOff);
+}
+
+function getEvPos(ev) {
+  //Gets the offset pos , the default pos
+  let pos = {
+    x: ev.offsetX,
+    y: ev.offsetY,
+  };
+  // Check if its a touch ev
+  if (gTouchEvs.includes(ev.type)) {
+    //so we will not trigger the mouse ev
+    ev.preventDefault();
+    //Gets the first touch point
+    ev = ev.changedTouches[0];
+    //Calc the right pos according to the touch screen
+    pos = {
+      x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
+      y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
+    };
+  }
+  return pos;
 }
