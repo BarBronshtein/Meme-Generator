@@ -57,7 +57,6 @@ function onSetLineTxt(txt) {
 
   const { lineWidth } = textSize(txt);
   setLineTxt(txt, meme.selectedLineIdx);
-  // setLinePosX(gCanvas, meme.selectedLineIdx, lineWidth);
 
   renderMeme();
 }
@@ -78,7 +77,6 @@ function drawText({ x, y, color, txt, size, font }) {
   // Set x position
   const meme = getMeme();
   const { lineWidth } = textSize(meme.lines.at(meme.selectedLineIdx).txt);
-  // setLinePosX(gCanvas, meme.selectedLineIdx, lineWidth);
 }
 
 function drawImage(img) {

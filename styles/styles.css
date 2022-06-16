@@ -1,9 +1,10 @@
-@import '/styles/basic/base.css';
-@import '/styles/basic/helpers.css';
-@import '/styles/components/header.css';
-@import '/styles/components/editor.css';
-@import '/styles/components/gallery.css';
-@import '/styles/basic/buttons.css';
+@import 'basic/base.css';
+@import 'basic/helpers.css';
+@import 'components/header.css';
+@import 'components/editor.css';
+@import 'components/gallery.css';
+@import 'basic/buttons.css';
+
 /* 
 @import 'C:/Users/shanp/OneDrive/Desktop/coding_academy/sprint2/styles/basic/base.css';
 @import 'C:/Users/shanp/OneDrive/Desktop/coding_academy/sprint2/styles/basic/helpers.css';

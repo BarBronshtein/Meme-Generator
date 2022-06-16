@@ -88,7 +88,7 @@ function setLinePosY(canvas, line, height) {
 }
 
 function setNewLinePos(canvas, line, width, height) {
-  // Sets position in creation of a new line or at alignment change
+  // Sets position in creation of a new line
   setLinePosX(canvas, line, width);
   setLinePosY(canvas, line, height);
 }
