@@ -108,9 +108,11 @@ function deleteLine() {
   gMeme.selectedLineIdx > -1 ? gMeme.selectedLineIdx-- : '';
   if (gMeme.selectedLineIdx > -1 && gMeme.lines.length)
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
+  return gMeme.lines.length;
 }
 
-function setLinePosX(canvas, line, width) {
+function setLinePosX(canvas, width) {
+  const line = gMeme.selectedLineIdx;
   const align = gMeme.lines.at(line).align;
   const pos = gMeme.lines.at(line);
   if (align === 'center') pos.x = (canvas.width - width) / 2;
@@ -118,7 +120,8 @@ function setLinePosX(canvas, line, width) {
   else pos.x = canvas.width - width;
 }
 
-function setLinePosY(canvas, line, height) {
+function setLinePosY(canvas, height) {
+  const line = gMeme.selectedLineIdx;
   const pos = gMeme.lines.at(line);
   // First line
   if (!line) pos.y = 20 + height;
@@ -128,10 +131,10 @@ function setLinePosY(canvas, line, height) {
   else pos.y = (canvas.height - height) / 2;
 }
 
-function setNewLinePos(canvas, line, width, height) {
+function setNewLinePos(canvas, width, height) {
   // Sets position in creation of a new line
-  setLinePosX(canvas, line, width);
-  setLinePosY(canvas, line, height);
+  setLinePosX(canvas, width);
+  setLinePosY(canvas, height);
 }
 
 function setLineTxt(txt, line) {

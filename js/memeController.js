@@ -45,14 +45,20 @@ function drawRectOnSelectedLine() {
 function onSetLineTxt(txt) {
   let isNewLine = false;
   const meme = getMeme();
-  if (!meme.lines.length) addLine();
+  const line = meme.selectedLineIdx;
+  if (!meme.lines.length) {
+    addLine();
+    const line = meme.selectedLineIdx;
+    const { lineWidth, lineHeight } = textSize(meme.lines[line].txt);
+    setNewLinePos(gCanvas, lineWidth, lineHeight);
+  }
   // If text user put is empty show write your meme
   // else calculate txt
   if (!txt) {
     txt = 'Write Your Meme';
     isNewLine = true;
   }
-  setLineTxt(txt, meme.selectedLineIdx);
+  setLineTxt(txt, line);
 
   renderMeme();
 }
@@ -79,7 +85,7 @@ function drawImage(img) {
 function onAddLine() {
   const newLine = addLine();
   const { lineWidth, lineHeight } = textSize(newLine.txt);
-  setNewLinePos(gCanvas, newLine, lineWidth, lineHeight);
+  setNewLinePos(gCanvas, lineWidth, lineHeight);
   renderMeme();
   setInputValueTo();
 }
@@ -132,15 +138,16 @@ function onSetFontSize(toIncrease) {
 }
 
 function onDeleteLine() {
-  deleteLine();
+  const remainingLines = deleteLine();
   renderMeme();
+  remainingLines || setInputValueTo();
 }
 
 function onSetAlignment(align) {
   setAlignment(align);
   const meme = getMeme();
   const { lineWidth } = textSize(meme.lines.at(meme.selectedLineIdx).txt);
-  setLinePosX(gCanvas, meme.selectedLineIdx, lineWidth);
+  setLinePosX(gCanvas, lineWidth);
   renderMeme();
 }
 
@@ -198,7 +205,7 @@ function setGrabOff() {
 function draw(ev) {
   const pos = getEvPos(ev);
   const meme = getMeme();
-  if (!meme.lines[meme.selectedLineIdx].isDrag) return;
+  if (!meme.lines.length || !meme.lines[meme.selectedLineIdx].isDrag) return;
   const dx = pos.x - gStartPos.x;
   const dy = pos.y - gStartPos.y;
   moveLine(dx, dy);
@@ -243,7 +250,7 @@ function onCreateSticker(emoji) {
   const newLine = addLine();
   newLine.txt = emoji;
   const { lineWidth, lineHeight } = textSize(newLine.txt);
-  setNewLinePos(gCanvas, newLine, lineWidth, lineHeight);
+  setNewLinePos(gCanvas, lineWidth, lineHeight);
   renderMeme();
   setInputValueTo(emoji);
 }
