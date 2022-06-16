@@ -151,11 +151,15 @@ function onSetAlignment(align) {
   renderMeme();
 }
 
-function showGallery() {
-  document.querySelector('.meme-gallery').classList.remove('hidden');
+function show(selector) {
+  document.querySelector('.meme-gallery').classList.add('hidden');
   document.querySelector('.meme-editor').classList.add('hidden');
+  document.querySelector('.saved-memes').classList.add('hidden');
+  // document.querySelector('.meme-about').classList.add('hidden');
+  document.querySelector(selector).classList.remove('hidden');
   document.querySelector('.share-container').innerHTML = '';
   resetMeme();
+  if (selector === '.saved-memes') renderSavedMemes();
 }
 
 function downloadImg(elLink) {
@@ -270,4 +274,8 @@ function renderEmojis() {
 function onMoveTo(toNextPage) {
   moveTo(toNextPage);
   renderEmojis();
+}
+
+function onSaveMeme() {
+  saveMeme();
 }

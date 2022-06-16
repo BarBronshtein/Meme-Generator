@@ -17,3 +17,21 @@ function onImgSelect(id) {
   renderEmojis();
   renderMeme();
 }
+
+function renderSavedMemes() {
+  const memes = getSavedMemes();
+  let html = '';
+  memes.forEach(
+    meme =>
+      (html += `<div onclick="onMemeSelect('${meme.id}')"><img src=${meme.url}></div>`)
+  );
+  document.querySelector('.saved-memes').innerHTML = html;
+}
+
+function onMemeSelect(id) {
+  document.querySelector('.saved-memes').classList.add('hidden');
+  document.querySelector('.meme-editor').classList.remove('hidden');
+  setMemeToCurMeme(id);
+  renderEmojis();
+  renderMeme();
+}

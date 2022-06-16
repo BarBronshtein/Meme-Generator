@@ -5,6 +5,7 @@ let gImgs = [
   { id: 1, url: 'img/meme-imgs/1.jpg' },
   { id: 2, url: 'img/meme-imgs/2.jpg' },
 ];
+let gSavedMemes = [];
 const gEmojis = [
   '🍕',
   '🥑',
@@ -27,6 +28,7 @@ const gPages = {
   curPage: 0,
   numPages: 4,
 };
+const STORAGE_KEY = 'memesDB';
 
 let gMeme = {
   selectedImgId: 1,
@@ -101,6 +103,18 @@ function getImgById(id) {
 
 function getMeme() {
   return gMeme;
+}
+
+function saveMeme() {
+  gSavedMemes.push(gMeme);
+  gSavedMemes.at(-1).url = '';
+  gSavedMemes.at(-1).url = getImgById(gSavedMemes.at(-1).selectedImgId).url;
+  gSavedMemes.at(-1).id = makeId();
+  saveToStorage(STORAGE_KEY, gSavedMemes);
+}
+
+function getSavedMemes() {
+  return (gSavedMemes = loadFromStorage(STORAGE_KEY));
 }
 
 function deleteLine() {
@@ -252,4 +266,10 @@ function moveTo(toNextPage) {
     return (gPages.curPage = gPages.numPages);
   // other going backwards
   gPages.curPage--;
+}
+
+function setMemeToCurMeme(id) {
+  const meme = gSavedMemes.find(meme => meme.id === id);
+  if (!meme) return;
+  gMeme = meme;
 }

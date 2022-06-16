@@ -11,8 +11,8 @@
     <header class="main-header flex space-between align-center">
       <div class="main-logo p3"></div>
       <ul class="main-nav clean-list flex">
-        <li onclick="showGallery()">Gallery</li>
-        <li>Memess</li>
+        <li onclick="show('.meme-gallery')">Gallery</li>
+        <li onclick="show('.saved-memes')">Memess</li>
         <li>About</li>
       </ul>
     </header>
@@ -114,17 +114,18 @@
               download="meme.jpg"
               >Download</a
             >
-
+            <button onclick="onSaveMeme()" class="btn save-btn">Save</button>
             <p class="user-msg hidden"></p>
             <button onclick="uploadImg()" class="btn share">Share</button>
             <div class="share-container"></div>
           </div>
         </div>
       </section>
+      <section class="saved-memes meme-gallery grid hidden"></section>
     </main>
     <script src="js/services/service-storage.js"></script>
     <script src="js/services/service-utils.js"></script>
-    <script src="js/memeService.js"></script>
+    <script src="js/services/memeService.js"></script>
     <script src="js/memeController.js"></script>
     <script src="js/galleryController.js"></script>
   </body>
