@@ -25,15 +25,15 @@ function renderMeme(toRenderRect = true) {
 }
 
 function drawRectOnSelectedLine() {
-  const rectPadding = 20;
+  const RECT_PADDING = 20;
   const meme = getMeme();
   const selectedLine = meme.lines[meme.selectedLineIdx];
   if (!selectedLine || !selectedLine.txt) return;
   const { lineHeight, lineWidth } = textSize(selectedLine.txt);
   gCtx.strokeRect(
-    selectedLine.x - rectPadding / 2,
+    selectedLine.x - RECT_PADDING / 2,
     selectedLine.y,
-    lineWidth + rectPadding,
+    lineWidth + RECT_PADDING,
     -lineHeight
   );
 }
@@ -41,7 +41,11 @@ function drawRectOnSelectedLine() {
 function onSetLineTxt(txt) {
   const meme = getMeme();
   if (!meme.lines.length) addLine();
-  setLineTxt(txt, meme.selectedLineIdx);
+  // If text user put is empty show write your meme
+  // else calculate txt
+  txt = txt ? txt : 'write Your Name';
+  const { lineWidth, lineHeight } = textSize(txt);
+  setLineTxt(txt, meme.selectedLineIdx, gCanvas, lineWidth, lineHeight, true);
   renderMeme();
 }
 
@@ -90,8 +94,9 @@ function focus() {
   elTxt.focus();
   const meme = getMeme();
 
-  if (meme.lines.at(meme.selectedLineIdx).txt === 'Write Your Meme')
+  if (meme.lines.at(meme.selectedLineIdx).txt === 'Write Your Meme') {
     elTxt.value = '';
+  }
   if (!elTxt.value) return;
   elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
 }

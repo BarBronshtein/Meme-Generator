@@ -46,7 +46,7 @@ function addLine() {
     align: 'center',
     color: { fillColor: '#fff', strokeColor: '#000' },
     x: 0,
-    y: 0,
+    y: 20,
   };
   return gMeme;
 }
@@ -66,7 +66,7 @@ function getMeme() {
 function deleteLine() {
   gMeme.lines.length && gMeme.lines.splice(gMeme.selectedLineIdx, 1);
   gMeme.selectedLineIdx > -1 ? gMeme.selectedLineIdx-- : '';
-  if (gMeme.selectedLineIdx > 0 && gMeme.lines.length)
+  if (gMeme.selectedLineIdx > -1 && gMeme.lines.length)
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
 }
 
@@ -90,8 +90,11 @@ function setLinePos(canvas, line, width, height, align) {
   setLinePosY(canvas, line, height);
 }
 
-function setLineTxt(txt, line) {
+function setLineTxt(txt, line, canvas, width, height, addNewLine) {
   gMeme.lines.at(line).txt = txt;
+  if (addNewLine)
+    setLinePos(canvas, line, width, height, gMeme.lines[line].align);
+  else setLinePosX(canvas, line, width);
 }
 
 function setImg(id) {
