@@ -43,9 +43,9 @@ let gMeme = {
       x: 100,
       y: 35,
       isDrag: false,
+      font: 'Impact',
     },
   ],
-  font: 'Impact',
 };
 
 _createImgs();
@@ -69,7 +69,7 @@ function _createImg(i) {
 }
 
 function setFontFamily(font) {
-  gMeme.font = font;
+  gMeme.lines[gMeme.selectedLineIdx].font = font;
 }
 
 function setTextPos(bringDown) {
