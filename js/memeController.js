@@ -3,7 +3,9 @@
 let gCanvas;
 let gCtx;
 let gStartPos;
+let gCurSelector = '.meme-gallery';
 const gTouchEvs = ['touchstart', 'touchend', 'touchmove'];
+
 function onInit() {
   renderGallery();
   gCanvas = document.querySelector('.canvas');
@@ -18,6 +20,7 @@ function renderMeme(toRenderRect = true) {
   const meme = getMeme();
   const memeImg = getImgById(meme.selectedImgId);
   const img = new Image();
+  console.log(img.src, memeImg, meme);
   img.src = memeImg.url;
   img.onload = () => {
     drawImage(img);
@@ -151,15 +154,21 @@ function onSetAlignment(align) {
   renderMeme();
 }
 
-function show(selector) {
-  document.querySelector('.meme-gallery').classList.add('hidden');
-  document.querySelector('.meme-editor').classList.add('hidden');
-  document.querySelector('.saved-memes').classList.add('hidden');
-  // document.querySelector('.meme-about').classList.add('hidden');
+function show(selector, elBtn) {
+  document.querySelector(gCurSelector).classList.add('hidden');
   document.querySelector(selector).classList.remove('hidden');
-  document.querySelector('.share-container').innerHTML = '';
-  resetMeme();
-  if (selector === '.saved-memes') renderSavedMemes();
+  document.querySelector('.meme-editor').classList.add('hidden');
+  const elActive = document.querySelector('.active');
+  elActive && elActive.classList.remove('active');
+  elBtn?.classList.add('active');
+  if (gCurSelector === '.meme-gallery') {
+    document.querySelector('.share-container').innerHTML = '';
+    resetMeme();
+  }
+  if (selector === '.saved-memes') {
+    renderSavedMemes();
+  }
+  gCurSelector = selector;
 }
 
 function downloadImg(elLink) {

@@ -10,8 +10,13 @@
   border-radius: 30px;
 }
 
+.search-bar > :first-child {
+  padding: 1rem;
+  border-radius: 50px;
+}
+
 .search-bar > * {
-  margin: 1rem 5px;
+  margin: 1rem auto;
 }
 .search-bar > div:last-child {
   border-radius: 50px;
@@ -27,6 +32,15 @@
 
 .img-container {
   margin-bottom: 2rem;
+}
+
+.img-container > * > img {
+  cursor: pointer;
+  transition: 0.2s all ease;
+}
+
+.img-container > * > img:hover {
+  outline: 5px solid #ff7f00;
 }
 
 /* Saved Memes Section */

@@ -3,6 +3,11 @@
   margin-bottom: 2rem;
 }
 
+.main-footer > * {
+  padding: 2rem;
+  font-size: 2rem;
+}
+
 .main-footer p {
   margin: 1rem;
 }
@@ -10,7 +15,27 @@
 .icons > * {
   padding: 0.5rem 1rem;
   border-right: 1px solid #fff;
+  cursor: pointer;
+  transition: 0.4s ease all;
 }
+
+.icons > .fa-instagram:hover {
+  color: #833ab4;
+  background-color: #f5f5f5;
+}
+.icons > .fa-github:hover {
+  color: #ad5c51;
+  background-color: #f5f5f5;
+}
+.icons > .fa-facebook-f:hover {
+  color: #3b5998;
+  background-color: #f5f5f5;
+}
+.icons > .fa-linkedin:hover {
+  color: #0072b1;
+  background-color: #e5e5e5;
+}
+
 .icons > :first-child {
   border-left: 1px solid #fff;
 }

@@ -16,10 +16,6 @@
   border-radius: 5px;
 }
 
-.features .main-features {
-  margin-bottom: 2rem;
-}
-
 .features .font-color.font-family {
   margin-bottom: 1rem;
 }
@@ -34,8 +30,40 @@
 .emojis {
   background-color: #fff;
   padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
 }
 
 .emojis > * {
   font-size: 2rem;
+}
+
+.additional {
+  width: 100%;
+  justify-content: space-evenly;
+}
+.additional > * {
+  flex: 1;
+  margin: 0 0.4rem;
+  flex-basis: 33%;
+  border-radius: 10px;
+  background-color: #ff7f00 !important;
+}
+.additional > *:hover {
+  background-color: #fff !important;
+}
+
+.additional > :first-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+}
+
+.share-container a {
+  border-radius: 10px;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -10,3 +10,11 @@
   padding: 80px 80px;
   background: url('../../img/LOGO/LOGO.png') no-repeat center center/contain;
 }
+
+.header-container > ul > li {
+  border-radius: 10px;
+}
+
+.header-container > ul > li:hover {
+  outline: 2px solid #e5e5e5;
+}

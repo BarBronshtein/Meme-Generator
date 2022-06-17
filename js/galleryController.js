@@ -12,6 +12,7 @@ function renderGallery() {
 }
 
 function onImgSelect(id) {
+  document.querySelector('.active').classList.remove('active');
   setImg(id);
   document.querySelector('.meme-gallery').classList.add('hidden');
   document.querySelector('.meme-editor').classList.remove('hidden');
@@ -25,7 +26,7 @@ function renderSavedMemes() {
   let html = '';
   memes.forEach(
     meme =>
-      (html += `<div onclick="onMemeSelect('${meme.id}')"><img src=${meme.url}></div>`)
+      (html += `<div onclick="onMemeSelect('${meme.id}')"><img src="${meme.url}"></div>`)
   );
   document.querySelector('.saved-memes').innerHTML = html;
 }

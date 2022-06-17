@@ -62,7 +62,7 @@ function _createImgs() {
 
 function _createImg(i) {
   return {
-    id: makeId(),
+    id: i,
     url: `img/meme-imgs/${i}.jpg`,
     categories: ['funny'], // TODO:replace with a function that create random categories based on a stock of categories
   };
@@ -102,7 +102,8 @@ function getImgs() {
 }
 
 function getImgById(id) {
-  return gImgs.find(img => img.id === id);
+  console.log(id);
+  return gImgs.find(img => img.id === +id);
 }
 
 function getMeme() {
@@ -110,6 +111,7 @@ function getMeme() {
 }
 
 function saveMeme() {
+  console.log(gSavedMemes);
   gSavedMemes.push(gMeme);
   gSavedMemes.at(-1).url = '';
   gSavedMemes.at(-1).url = getImgById(gSavedMemes.at(-1).selectedImgId).url;
@@ -118,7 +120,9 @@ function saveMeme() {
 }
 
 function getSavedMemes() {
-  return (gSavedMemes = loadFromStorage(STORAGE_KEY));
+  gSavedMemes = loadFromStorage(STORAGE_KEY);
+  if (!gSavedMemes) return (gSavedMemes = []);
+  return gSavedMemes;
 }
 
 function deleteLine() {

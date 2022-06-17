@@ -18,40 +18,42 @@
       >
         <div class="main-logo p3"></div>
         <ul class="main-nav clean-list flex">
-          <li class="btn btn-nav" onclick="show('.meme-gallery')">Gallery</li>
-          <li class="btn btn-nav" onclick="show('.saved-memes')">Memess</li>
+          <li class="btn btn-nav active" onclick="show('.meme-gallery',this)">
+            Gallery
+          </li>
+          <li class="btn btn-nav" onclick="show('.saved-memes',this)">
+            Memess
+          </li>
           <li class="btn btn-nav">About</li>
         </ul>
       </div>
     </header>
     <main class="meme-container flex flex-column">
       <section class="meme-gallery">
-        <div class="bg-secondary">
-          <div class="search-bar bg-dark main-layout flex flex-column">
-            <input
-              class="align-s-st"
-              oninput="onSetFilterBy(this.value)"
-              type="text"
-              name="filter"
-              list="categories"
-              placeholder="search by category..."
-            />
-            <datalist id="categories">
-              <option value="funny"></option>
-              <option value="political"></option>
-              <option value="animals"></option>
-              <option value="baby"></option>
-              <option value="cute"></option>
-            </datalist>
-            <div
-              class="key-search-words main-layout flex bg-primary align-s-c"
-            ></div>
-          </div>
+        <div class="search-bar bg-dark main-layout flex flex-column">
+          <input
+            class="align-s-st"
+            oninput="onSetFilterBy(this.value)"
+            type="text"
+            name="filter"
+            list="categories"
+            placeholder="search by category..."
+          />
+          <datalist id="categories">
+            <option value="funny"></option>
+            <option value="political"></option>
+            <option value="animals"></option>
+            <option value="baby"></option>
+            <option value="cute"></option>
+          </datalist>
+          <div
+            class="key-search-words main-layout flex bg-primary align-s-c"
+          ></div>
         </div>
         <div class="img-container grid justify-center"></div>
       </section>
       <section class="meme-editor flex hidden">
-        <div class="canvas-container">
+        <div class="canvas-container flex align-center justify-center">
           <canvas class="canvas" width="500" height="500"></canvas>
         </div>
         <div class="features flex flex-column justify-center align-center">
@@ -149,7 +151,7 @@
             </button>
           </div>
           <div class="emojis"></div>
-          <div class="additional">
+          <div class="additional flex align-center justify-between">
             <a
               href=""
               onclick="downloadImg(this)"
@@ -160,8 +162,8 @@
             <button onclick="onSaveMeme()" class="btn save-btn">Save</button>
             <p class="user-msg hidden"></p>
             <button onclick="uploadImg()" class="btn share">Share</button>
-            <div class="share-container"></div>
           </div>
+          <div class="share-container flex align-center justify-center"></div>
         </div>
       </section>
       <section

@@ -28,3 +28,7 @@ a {
 .main-layout {
   max-width: 960px;
 }
+
+.active {
+  outline: 2px solid #e5e5e5;
+}
