@@ -1,0 +1,16 @@
+.main-footer {
+  flex: 1;
+  margin-bottom: 2rem;
+}
+
+.main-footer p {
+  margin: 1rem;
+}
+
+.icons > * {
+  padding: 0.5rem 1rem;
+  border-right: 1px solid #fff;
+}
+.icons > :first-child {
+  border-left: 1px solid #fff;
+}

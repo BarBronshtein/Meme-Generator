@@ -47,7 +47,7 @@ function renderSearchWords() {
   const searchKeys = getSearchKeySearchCountMap();
   let html = '';
   for (const key in searchKeys) {
-    html += `<span class="p4" onclick=onMakeFsBigger(this,this.textContent) data-fs="${searchKeys[key]}">${key}</span>`;
+    html += `<span class="btn key-search-btn p2" onclick=onMakeFsBigger(this,this.textContent) data-fs="${searchKeys[key]}">${key}</span>`;
   }
   const elSearchKeys = document.querySelector('.key-search-words');
   elSearchKeys.innerHTML = html;

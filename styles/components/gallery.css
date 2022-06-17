@@ -4,3 +4,32 @@
   grid-gap: 20px;
   grid-template-columns: repeat(auto-fit, 250px);
 }
+
+.search-bar {
+  margin: 1rem auto;
+  border-radius: 30px;
+}
+
+.search-bar > * {
+  margin: 1rem 5px;
+}
+.search-bar > div:last-child {
+  border-radius: 50px;
+}
+
+.search-bar > div:last-child > * {
+  border-right: 1px solid #e5e5e5;
+}
+
+.search-bar > div:last-child > :last-child {
+  border: none;
+}
+
+.img-container {
+  margin-bottom: 2rem;
+}
+
+/* Saved Memes Section */
+.saved-memes {
+  margin: 2rem 0;
+}

@@ -2,8 +2,8 @@
   padding: 40px 20px;
 }
 
-.main-header {
-  margin: 0 1rem;
+.header-container {
+  width: 100%;
 }
 
 .main-header .main-logo {

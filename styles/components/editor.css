@@ -1,4 +1,41 @@
-.canvas-container {
-  width: 100%;
+.meme-editor {
+  margin: 2rem 1rem;
+}
+
+.meme-editor > * {
+  flex-basis: 50%;
+}
+
+.meme-editor :last-child {
   height: 100%;
+}
+
+.features input[type='text'],
+.features .secondary-features {
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+}
+
+.features .main-features {
+  margin-bottom: 2rem;
+}
+
+.features .font-color.font-family {
+  margin-bottom: 1rem;
+}
+
+.features .font-color.font-family > *,
+.features .secondary-features > *,
+.features .main-features > * {
+  margin-inline-end: 10px;
+  border-radius: 5px;
+}
+
+.emojis {
+  background-color: #fff;
+  padding: 2rem;
+}
+
+.emojis > * {
+  font-size: 2rem;
 }

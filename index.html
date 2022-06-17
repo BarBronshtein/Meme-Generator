@@ -4,38 +4,51 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/e425051cc1.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="styles/styles.css" />
     <title>Meme Generator</title>
   </head>
   <body onload="onInit()">
-    <header class="main-header flex space-between align-center">
-      <div class="main-logo p3"></div>
-      <ul class="main-nav clean-list flex">
-        <li onclick="show('.meme-gallery')">Gallery</li>
-        <li onclick="show('.saved-memes')">Memess</li>
-        <li>About</li>
-      </ul>
+    <header class="main-header bg-dark flex justify-center">
+      <div
+        class="header-container main-layout flex space-between align-center text-light"
+      >
+        <div class="main-logo p3"></div>
+        <ul class="main-nav clean-list flex">
+          <li class="btn btn-nav" onclick="show('.meme-gallery')">Gallery</li>
+          <li class="btn btn-nav" onclick="show('.saved-memes')">Memess</li>
+          <li class="btn btn-nav">About</li>
+        </ul>
+      </div>
     </header>
-    <main class="meme-container">
-      <section class="meme-gallery flex flex-column">
-        <div class="search-bar">
-          <input
-            oninput="onSetFilterBy(this.value)"
-            type="text"
-            name="filter"
-            list="categories"
-            placeholder="search by category..."
-          />
-          <datalist id="categories">
-            <option value="funny"></option>
-            <option value="political"></option>
-            <option value="animals"></option>
-            <option value="baby"></option>
-            <option value="cute"></option>
-          </datalist>
-          <div class="key-search-words"></div>
+    <main class="meme-container flex flex-column">
+      <section class="meme-gallery">
+        <div class="bg-secondary">
+          <div class="search-bar bg-dark main-layout flex flex-column">
+            <input
+              class="align-s-st"
+              oninput="onSetFilterBy(this.value)"
+              type="text"
+              name="filter"
+              list="categories"
+              placeholder="search by category..."
+            />
+            <datalist id="categories">
+              <option value="funny"></option>
+              <option value="political"></option>
+              <option value="animals"></option>
+              <option value="baby"></option>
+              <option value="cute"></option>
+            </datalist>
+            <div
+              class="key-search-words main-layout flex bg-primary align-s-c"
+            ></div>
+          </div>
         </div>
-        <div class="img-container grid"></div>
+        <div class="img-container grid justify-center"></div>
       </section>
       <section class="meme-editor flex hidden">
         <div class="canvas-container">
@@ -81,6 +94,32 @@
             <button onclick="onSetFontSize(false)" class="btn decrease-fs">
               <img src="img/ICONS/decrease-font-icon.png" alt="" />
             </button>
+            <button onclick="onSetAlignment('left')" class="btn btn-align-left">
+              <img src="img/ICONS/align-to-left.png" alt="" />
+            </button>
+            <button
+              onclick="onSetAlignment('center')"
+              class="btn btn-align-center"
+            >
+              <img src="img/ICONS/center-text-alignment.png" alt="" />
+            </button>
+            <button
+              onclick="onSetAlignment('right')"
+              class="btn btn-align-right"
+            >
+              <img src="img/ICONS/align-to-right.png" alt="" />
+            </button>
+          </div>
+          <div class="font-color font-family flex">
+            <select
+              onclick=""
+              name="font-family"
+              class="btn change-font-family"
+            >
+              Impact
+              <option value="Impact">Impact</option>
+              <option value="Arial">Arial</option>
+            </select>
             <button class="btn change-stroke-btn">
               <input
                 onchange="onSetStrokeClr(this.value)"
@@ -108,21 +147,6 @@
                 alt=""
               />
             </button>
-            <button onclick="onSetAlignment('left')" class="btn btn-align-left">
-              <img src="img/ICONS/align-to-left.png" alt="" />
-            </button>
-            <button
-              onclick="onSetAlignment('center')"
-              class="btn btn-align-center"
-            >
-              <img src="img/ICONS/center-text-alignment.png" alt="" />
-            </button>
-            <button
-              onclick="onSetAlignment('right')"
-              class="btn btn-align-right"
-            >
-              <img src="img/ICONS/align-to-right.png" alt="" />
-            </button>
           </div>
           <div class="emojis"></div>
           <div class="additional">
@@ -140,9 +164,24 @@
           </div>
         </div>
       </section>
-      <section class="saved-memes meme-gallery grid hidden"></section>
+      <section
+        class="saved-memes meme-gallery grid justify-center hidden"
+      ></section>
     </main>
-    <footer class="main-footer"></footer>
+    <footer class="main-footer flex justify-center bg-dark text-light">
+      <div
+        class="footer-content main-layout flex flex-column align-center justify-center"
+      >
+        <h2>Meme Generator</h2>
+        <p>&copy; All rights Reserved 2022</p>
+        <div class="icons flex bg-primary">
+          <i class="fa-brands fa-facebook-f"></i>
+          <i class="fa-brands fa-github"></i>
+          <i class="fa-brands fa-linkedin"></i>
+          <i class="fa-brands fa-instagram"></i>
+        </div>
+      </div>
+    </footer>
     <script src="js/services/service-storage.js"></script>
     <script src="js/services/service-utils.js"></script>
     <script src="js/services/memeService.js"></script>

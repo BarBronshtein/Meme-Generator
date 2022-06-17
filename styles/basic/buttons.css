@@ -1,13 +1,28 @@
 .btn {
-  width: 2rem;
-  height: 2rem;
   border: none;
-  background-color: white;
+  transition: 0.4s all ease;
+}
+.btn.key-search-btn:hover {
+  background-color: #fff;
+}
+.btn.key-search-btn:hover:last-child {
+  border-end-end-radius: 50px;
+  border-start-end-radius: 50px;
+}
+.btn.key-search-btn:hover:first-child {
+  border-start-start-radius: 50px;
+  border-end-start-radius: 50px;
 }
 
 .btn.change-stroke-btn,
 .btn.change-fill-btn {
   position: relative;
+}
+
+.features .btn {
+  width: 2rem;
+  height: 2rem;
+  background-color: #fff;
 }
 
 .btn-stroke-img,
@@ -20,4 +35,15 @@
   position: relative;
   z-index: 10;
   opacity: 0;
+}
+
+.btn.change-font-family {
+  width: 100px;
+}
+
+.btn {
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #ff7f00;
 }

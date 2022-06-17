@@ -10,8 +10,26 @@
   align-items: center;
 }
 
+.align-s-st {
+  align-self: flex-start;
+}
+.align-s-c {
+  align-self: center;
+}
+.align-s-end {
+  align-self: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
 .flex.space-between {
   justify-content: space-between;
+}
+
+.flex.space-around {
+  justify-content: space-around;
 }
 
 .grid {
@@ -39,4 +57,30 @@
 
 .hidden {
   display: none;
+}
+
+.bg-primary {
+  background-color: #ff7f00;
+}
+.bg-secondary {
+  background-color: #e3e3e3;
+}
+.bg-dark {
+  background-color: #333;
+}
+.bg-light {
+  background-color: #fff;
+}
+.text-primary {
+  color: #ff7f00;
+}
+.text-secondary {
+  color: #e3e3e3;
+}
+.text-dark {
+  color: #333;
+}
+
+.text-light {
+  color: #fff;
 }

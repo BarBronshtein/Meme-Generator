@@ -10,6 +10,9 @@ html {
 
 body {
   background-color: #eee;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 img {
@@ -20,4 +23,8 @@ img {
 
 a {
   text-decoration: none;
+}
+
+.main-layout {
+  max-width: 960px;
 }
