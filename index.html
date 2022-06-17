@@ -12,11 +12,12 @@
     <title>Meme Generator</title>
   </head>
   <body onload="onInit()">
+    <div class="main-screen" onclick="toggleMenu(true)"></div>
     <header class="main-header bg-dark flex justify-center">
       <div
         class="header-container main-layout flex space-between align-center text-light"
       >
-        <div class="main-logo p3"></div>
+        <div onclick="show('.meme-gallery')" class="main-logo p3"></div>
         <ul class="main-nav clean-list flex">
           <li class="btn btn-nav active" onclick="show('.meme-gallery',this)">
             Gallery
@@ -26,6 +27,7 @@
           </li>
           <li class="btn btn-nav">About</li>
         </ul>
+        <button onclick="toggleMenu()" class="btn menu-toggle">☰</button>
       </div>
     </header>
     <main class="meme-container flex flex-column">
@@ -56,7 +58,9 @@
         <div class="canvas-container flex align-center justify-center">
           <canvas class="canvas" width="500" height="500"></canvas>
         </div>
-        <div class="features flex flex-column justify-center align-center">
+        <div
+          class="features main-box flex flex-column justify-center align-center"
+        >
           <input
             oninput="onSetLineTxt(this.value)"
             type="text"

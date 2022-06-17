@@ -10,8 +10,20 @@ function onInit() {
   renderGallery();
   gCanvas = document.querySelector('.canvas');
   gCtx = gCanvas.getContext('2d');
+  resizeCanvas();
+  window.onresize = resizeCanvas;
   addMouseListeners();
   addTouchListeners();
+}
+
+function resizeCanvas() {
+  if (window.innerWidth < 780) {
+    gCanvas.width = '300';
+    gCanvas.height = '250';
+  } else {
+    gCanvas.width = '500';
+    gCanvas.height = '500';
+  }
 }
 
 function renderMeme(toRenderRect = true) {
@@ -20,7 +32,6 @@ function renderMeme(toRenderRect = true) {
   const meme = getMeme();
   const memeImg = getImgById(meme.selectedImgId);
   const img = new Image();
-  console.log(img.src, memeImg, meme);
   img.src = memeImg.url;
   img.onload = () => {
     drawImage(img);
@@ -287,4 +298,15 @@ function onMoveTo(toNextPage) {
 
 function onSaveMeme() {
   saveMeme();
+}
+
+function toggleMenu(isOpen = false) {
+  const elBtn = document.querySelector('.menu-toggle');
+  if (elBtn.textContent === 'X' || isOpen) {
+    elBtn.textContent = '☰';
+    document.body.classList.remove('menu-open');
+  } else {
+    elBtn.textContent = 'X';
+    document.body.classList.add('menu-open');
+  }
 }

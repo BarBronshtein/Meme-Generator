@@ -12,7 +12,7 @@ function renderGallery() {
 }
 
 function onImgSelect(id) {
-  document.querySelector('.active').classList.remove('active');
+  document.querySelector('.active')?.classList.remove('active');
   setImg(id);
   document.querySelector('.meme-gallery').classList.add('hidden');
   document.querySelector('.meme-editor').classList.remove('hidden');

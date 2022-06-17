@@ -34,15 +34,6 @@
   margin-bottom: 2rem;
 }
 
-.img-container > * > img {
-  cursor: pointer;
-  transition: 0.2s all ease;
-}
-
-.img-container > * > img:hover {
-  outline: 5px solid #ff7f00;
-}
-
 /* Saved Memes Section */
 .saved-memes {
   margin: 2rem 0;

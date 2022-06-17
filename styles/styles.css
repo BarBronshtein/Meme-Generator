@@ -4,7 +4,9 @@
 @import 'components/editor.css';
 @import 'components/gallery.css';
 @import 'components/footer.css';
+@import 'components/screen.css';
 @import 'basic/buttons.css';
+@import 'mq/mq.css';
 
 /* 
 @import 'C:/Users/shanp/OneDrive/Desktop/coding_academy/sprint2/styles/basic/base.css';

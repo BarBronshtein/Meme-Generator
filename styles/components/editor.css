@@ -1,5 +1,14 @@
 .meme-editor {
   margin: 2rem 1rem;
+  flex-direction: column;
+}
+
+.features {
+  margin: auto;
+}
+
+.main-box {
+  max-width: 360px;
 }
 
 .meme-editor > * {
@@ -8,6 +17,10 @@
 
 .meme-editor :last-child {
   height: 100%;
+}
+.features input[type='text'] {
+  width: 100%;
+  height: 25%;
 }
 
 .features input[type='text'],
@@ -20,6 +33,16 @@
   margin-bottom: 1rem;
 }
 
+.features .font-color.font-family,
+.features .secondary-features {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.features select {
+  flex: 1;
+}
 .features .font-color.font-family > *,
 .features .secondary-features > *,
 .features .main-features > * {
@@ -27,15 +50,35 @@
   border-radius: 5px;
 }
 
-.emojis {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 10px;
-  margin-bottom: 2rem;
+.features .main-features {
+  margin-bottom: 1rem;
 }
 
-.emojis > * {
+.emojis {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  display: flex;
+}
+
+.emojis > span.btn {
+  margin: auto;
   font-size: 2rem;
+  height: 3rem;
+  width: 3rem;
+}
+
+.emojis > :first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.emojis > :last-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .additional {
