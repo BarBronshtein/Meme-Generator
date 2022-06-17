@@ -20,8 +20,8 @@
 }
 
 .features .btn {
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   background-color: #fff;
 }
 
@@ -43,4 +43,12 @@
 
 .btn:hover {
   background-color: #ff7f00;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+span.btn.key-search-btn:hover {
+  padding: 1.55rem;
 }

@@ -217,6 +217,11 @@ function setGrabOn(ev) {
   // TODO:Find text to drag
   const pos = getEvPos(ev);
   if (!isLineClicked(pos)) return;
+  if (ev.type === 'dblclick') {
+    document.body.style.cursor = 'auto';
+    return focus();
+  }
+
   setLineDrag(true);
   gStartPos = pos;
   renderMeme();
@@ -227,9 +232,11 @@ function setGrabOff() {
 }
 
 function draw(ev) {
+  document.body.style.cursor = 'grab';
   const pos = getEvPos(ev);
   const meme = getMeme();
   if (!meme.lines.length || !meme.lines[meme.selectedLineIdx].isDrag) return;
+  document.body.style.cursor = 'grabbed';
   const dx = pos.x - gStartPos.x;
   const dy = pos.y - gStartPos.y;
   moveLine(dx, dy);
@@ -239,6 +246,7 @@ function draw(ev) {
 
 function addMouseListeners() {
   gCanvas.addEventListener('mousedown', setGrabOn);
+  gCanvas.addEventListener('dblclick', setGrabOn);
   gCanvas.addEventListener('mousemove', draw);
   gCanvas.addEventListener('mouseup', setGrabOff);
 }
@@ -309,4 +317,8 @@ function toggleMenu(isOpen = false) {
     elBtn.textContent = 'X';
     document.body.classList.add('menu-open');
   }
+}
+
+function cursorNormal() {
+  document.body.style.cursor = 'default';
 }

@@ -44,12 +44,17 @@ function onSetFilterBy(txt) {
   renderGallery();
 }
 
-function renderSearchWords() {
+function renderSearchWords(showAll = false) {
   const searchKeys = getSearchKeySearchCountMap();
   let html = '';
+  const data = {};
   for (const key in searchKeys) {
     html += `<span class="btn key-search-btn p2" onclick=onMakeFsBigger(this,this.textContent) data-fs="${searchKeys[key]}">${key}</span>`;
+    data[key] = searchKeys[key];
   }
+  if (!showAll)
+    html = `<span class="btn key-search-btn p2" onclick=onMakeFsBigger(this,this.textContent) data-fs="${data.funny}">funny</span><span class="btn key-search-btn p2" onclick=onMakeFsBigger(this,this.textContent) data-fs="${data.cat}">cat</span><span class="btn key-search-btn p2" onclick=onMakeFsBigger(this,this.textContent) data-fs="${data.baby}">baby</span><span class="btn key-search-btn p2" onclick=renderSearchWords(true)>More...</span>`;
+
   const elSearchKeys = document.querySelector('.key-search-words');
   elSearchKeys.innerHTML = html;
   elSearchKeys.childNodes.forEach(

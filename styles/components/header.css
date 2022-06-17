@@ -7,6 +7,7 @@
 }
 
 .main-header .main-logo {
+  cursor: pointer;
   padding: 40px;
   background: url('../../img/LOGO/LOGO.png') no-repeat center center/contain;
 }

@@ -56,7 +56,12 @@
       </section>
       <section class="meme-editor flex hidden">
         <div class="canvas-container flex align-center justify-center">
-          <canvas class="canvas" width="500" height="500"></canvas>
+          <canvas
+            onmouseout="cursorNormal()"
+            class="canvas"
+            width="500"
+            height="500"
+          ></canvas>
         </div>
         <div
           class="features main-box flex flex-column justify-center align-center"
