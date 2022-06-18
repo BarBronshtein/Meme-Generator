@@ -1,6 +1,12 @@
 'use strict';
 
-let gKeywordSearchCountMap = { funny: 6, cat: 10, baby: 2 };
+let gKeywordSearchCountMap = {
+  funny: 6,
+  animals: 10,
+  baby: 2,
+  politics: 5,
+  cute: 3,
+};
 let gImgs = [
   { id: 1, url: 'img/meme-imgs/1.jpg' },
   { id: 2, url: 'img/meme-imgs/2.jpg' },
@@ -202,11 +208,10 @@ function doUploadImg(imgDataUrl, onSuccess) {
     body: formData,
   }) //Gets the result and extract the text/ url from it
     .then(res => res.text())
-    .then(url => {
-      console.log('Got back live url:', url);
+    .then(url =>
       //Pass the url we got to the callBack func onSuccess, that will create the link to facebook
-      onSuccess(url);
-    })
+      onSuccess(url)
+    )
     .catch(err => {
       console.error(err);
     });

@@ -4,8 +4,14 @@ let gCanvas;
 let gCtx;
 let gStartPos;
 let gCurSelector = '.meme-gallery';
+let gTapped = false;
 const gTouchEvs = ['touchstart', 'touchend', 'touchmove'];
-
+const gElTxt = document.querySelector('[name=text]');
+const gElMemeEditor = document.querySelector('.meme-editor');
+const gElShareContainer = document.querySelector('.share-container');
+const gElEmojis = document.querySelector('.emojis');
+const gElBtn = document.querySelector('.menu-toggle');
+const gElBody = document.body;
 function onInit() {
   renderGallery();
   gCanvas = document.querySelector('.canvas');
@@ -24,6 +30,7 @@ function resizeCanvas() {
     gCanvas.width = '500';
     gCanvas.height = '500';
   }
+  gElMemeEditor.classList.contains('hidden') || renderMeme();
 }
 
 function renderMeme(toRenderRect = true) {
@@ -41,7 +48,8 @@ function renderMeme(toRenderRect = true) {
 }
 
 function drawRectOnSelectedLine() {
-  const RECT_PADDING = 20;
+  const RECT_X_PADDING = 20;
+  const RECT_Y_PADDING = 5;
   const meme = getMeme();
   const selectedLine = meme.lines[meme.selectedLineIdx];
   if (!selectedLine || !selectedLine.txt) return;
@@ -49,29 +57,25 @@ function drawRectOnSelectedLine() {
   setLineWidth(selectedLine, lineWidth);
   setLineHeight(selectedLine, lineHeight);
   gCtx.strokeRect(
-    selectedLine.x - RECT_PADDING / 2,
+    selectedLine.x - RECT_X_PADDING / 2,
     selectedLine.y,
-    lineWidth + RECT_PADDING,
-    -lineHeight
+    lineWidth + RECT_X_PADDING,
+    -lineHeight - RECT_Y_PADDING
   );
 }
 
 function onSetLineTxt(txt) {
-  let isNewLine = false;
   const meme = getMeme();
   const line = meme.selectedLineIdx;
   if (!meme.lines.length) {
+    // Adds new line if there arent any and positining it accordingly
     addLine();
     const line = meme.selectedLineIdx;
     const { lineWidth, lineHeight } = textSize(meme.lines[line].txt);
     setNewLinePos(gCanvas, lineWidth, lineHeight);
   }
-  // If text user put is empty show write your meme
-  // else calculate txt
-  if (!txt) {
-    txt = 'Write Your Meme';
-    isNewLine = true;
-  }
+  // If text user put is empty show write your meme otherwise use given txt
+  if (!txt) txt = 'Write Your Meme';
   setLineTxt(txt, line);
 
   renderMeme();
@@ -96,17 +100,17 @@ function drawImage(img) {
   gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
 }
 
-function onAddLine() {
+function onAddLine(emoji = '') {
   const newLine = addLine();
+  if (emoji) newLine.txt = emoji;
   const { lineWidth, lineHeight } = textSize(newLine.txt);
   setNewLinePos(gCanvas, lineWidth, lineHeight);
   renderMeme();
-  setInputValueTo();
+  setInputValueTo(emoji);
 }
 
-function setInputValueTo(value = '') {
-  const elTxt = document.querySelector('[name=text]');
-  elTxt.value = value;
+function setInputValueTo(value) {
+  gElTxt.value = value;
 }
 
 function onChangeLine() {
@@ -114,15 +118,15 @@ function onChangeLine() {
   focus();
   renderMeme();
 }
+
 function focus() {
-  const elTxt = document.querySelector('[name=text]');
-  elTxt.focus();
+  gElTxt.focus();
   const meme = getMeme();
 
-  elTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
-
-  if (elTxt.value === 'Write Your Meme') {
-    elTxt.value = '';
+  gElTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
+  // Clears input when user start typing when txt is set to default
+  if (gElTxt.value === 'Write Your Meme') {
+    gElTxt.value = '';
   }
 }
 
@@ -165,21 +169,25 @@ function onSetAlignment(align) {
   renderMeme();
 }
 
-function show(selector, elBtn) {
+function show(newSelector, elBtn) {
+  // Hiding all
   document.querySelector(gCurSelector).classList.add('hidden');
-  document.querySelector(selector).classList.remove('hidden');
-  document.querySelector('.meme-editor').classList.add('hidden');
-  const elActive = document.querySelector('.active');
-  elActive && elActive.classList.remove('active');
-  elBtn?.classList.add('active');
-  if (gCurSelector === '.meme-gallery') {
-    document.querySelector('.share-container').innerHTML = '';
+  document.querySelector(newSelector).classList.remove('hidden');
+  gCurSelector = newSelector;
+
+  if (newSelector !== '.meme-editor') {
+    // Sets active class om button
+    const elActive = document.querySelector('.active');
+    elActive?.classList.remove('active');
+    elBtn.classList.add('active');
+    // Reset meme
+    gElTxt.value = '';
+    gElShareContainer.innerHTML = '';
     resetMeme();
   }
-  if (selector === '.saved-memes') {
-    renderSavedMemes();
-  }
-  gCurSelector = selector;
+  if (newSelector === '.saved-memes') renderSavedMemes();
+  if (newSelector === '.meme-gallery') renderGallery();
+  toggleMenu(true);
 }
 
 function downloadImg(elLink) {
@@ -198,12 +206,8 @@ function uploadImg() {
   function onSuccess(uploadedImgUrl) {
     //Encode the instance of certain characters in the url
     const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl);
-    console.log(encodedUploadedImgUrl);
-    document.querySelector(
-      '.user-msg'
-    ).innerText = `Your photo is available here: ${uploadedImgUrl}`;
     //Create a link that on click will make a post in facebook with the image we uploaded
-    document.querySelector('.share-container').innerHTML = `
+    gElShareContainer.innerHTML = `
         <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">
            Share   
         </a>`;
@@ -217,14 +221,21 @@ function setGrabOn(ev) {
   // TODO:Find text to drag
   const pos = getEvPos(ev);
   if (!isLineClicked(pos)) return;
-  if (ev.type === 'dblclick') {
-    document.body.style.cursor = 'auto';
+  // Supporting dbl click on mobile to make inline editing
+  if (ev.type === 'click' && gTapped) {
+    gElBody.style.cursor = 'auto';
+    gTapped = false;
     return focus();
   }
-
+  if (ev.type === 'click') {
+    gTapped = true;
+    return setTimeout(() => (gTapped = false), 500);
+  }
+  // If text is selected make line drag to
   setLineDrag(true);
   gStartPos = pos;
   renderMeme();
+  gElBody.style.cursor = 'grabbing';
 }
 
 function setGrabOff() {
@@ -232,21 +243,22 @@ function setGrabOff() {
 }
 
 function draw(ev) {
-  document.body.style.cursor = 'grab';
+  gElBody.style.cursor = 'grab';
   const pos = getEvPos(ev);
   const meme = getMeme();
   if (!meme.lines.length || !meme.lines[meme.selectedLineIdx].isDrag) return;
-  document.body.style.cursor = 'grabbed';
+  // Moves selected text
+  gElBody.style.cursor = 'grabbing';
   const dx = pos.x - gStartPos.x;
   const dy = pos.y - gStartPos.y;
-  moveLine(dx, dy);
   gStartPos = pos;
+  moveLine(dx, dy);
   renderMeme();
 }
 
 function addMouseListeners() {
   gCanvas.addEventListener('mousedown', setGrabOn);
-  gCanvas.addEventListener('dblclick', setGrabOn);
+  gCanvas.addEventListener('click', setGrabOn);
   gCanvas.addEventListener('mousemove', draw);
   gCanvas.addEventListener('mouseup', setGrabOff);
 }
@@ -278,25 +290,16 @@ function getEvPos(ev) {
   return pos;
 }
 
-function onCreateSticker(emoji) {
-  const newLine = addLine();
-  newLine.txt = emoji;
-  const { lineWidth, lineHeight } = textSize(newLine.txt);
-  setNewLinePos(gCanvas, lineWidth, lineHeight);
-  renderMeme();
-  setInputValueTo(emoji);
-}
-
 function renderEmojis() {
   const emojis = getEmojis();
   let html =
     '<span class="btn pagination-btn" onclick="onMoveTo(false)"><</span>';
   emojis.forEach(
     emoji =>
-      (html += `<span onclick="onCreateSticker(this.textContent)" class="btn emoji-btn">${emoji}</span>`)
+      (html += `<span onclick="onAddLine(this.textContent)" class="btn emoji-btn">${emoji}</span>`)
   );
   html += '<span class="btn pagination-btn" onclick="onMoveTo(true)">></span>';
-  document.querySelector('.emojis').innerHTML = html;
+  gElEmojis.innerHTML = html;
 }
 
 function onMoveTo(toNextPage) {
@@ -309,16 +312,15 @@ function onSaveMeme() {
 }
 
 function toggleMenu(isOpen = false) {
-  const elBtn = document.querySelector('.menu-toggle');
-  if (elBtn.textContent === 'X' || isOpen) {
-    elBtn.textContent = '☰';
-    document.body.classList.remove('menu-open');
+  if (gElBtn.textContent === 'X' || isOpen) {
+    gElBtn.textContent = '☰';
+    gElBody.classList.remove('menu-open');
   } else {
-    elBtn.textContent = 'X';
-    document.body.classList.add('menu-open');
+    gElBtn.textContent = 'X';
+    gElBody.classList.add('menu-open');
   }
 }
 
 function cursorNormal() {
-  document.body.style.cursor = 'default';
+  gElBody.style.cursor = 'default';
 }
