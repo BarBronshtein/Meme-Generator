@@ -52,6 +52,7 @@ let gMeme = {
       font: 'Impact',
     },
   ],
+  font: 'impact',
 };
 
 _createImgs();
@@ -76,6 +77,7 @@ function _createImg(i) {
 
 function setFontFamily(font) {
   gMeme.lines[gMeme.selectedLineIdx].font = font;
+  gMeme.font = font;
 }
 
 function setTextPos(bringDown) {
@@ -88,7 +90,6 @@ function setAlignment(align) {
 
 function addLine() {
   gMeme.selectedLineIdx++;
-
   return (gMeme.lines[gMeme.selectedLineIdx] = {
     txt: 'Write Your Meme',
     size: 25,
@@ -97,6 +98,7 @@ function addLine() {
     x: 0,
     y: 20,
     isDrag: false,
+    font: gMeme.font,
   });
 }
 
@@ -230,6 +232,7 @@ function isLineClicked(clickedPos) {
   if (idx === -1) return false;
   // Set selected line to matched line index
   gMeme.selectedLineIdx = idx;
+  setInputFontFamilyTo();
   return true;
 }
 
