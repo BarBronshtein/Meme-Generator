@@ -39,6 +39,55 @@ let gMeme = {
 
 _createImgs();
 
+function doUploadImg(imgDataUrl, onSuccess) {
+  //Pack the image for delivery
+  const formData = new FormData();
+  formData.append('img', imgDataUrl);
+  //Send a post req with the image to the server
+  fetch('//ca-upload.com/here/upload.php', {
+    method: 'POST',
+    body: formData,
+  }) //Gets the result and extract the text/ url from it
+    .then(res => res.text())
+    .then(url =>
+      //Pass the url we got to the callBack func onSuccess, that will create the link to facebook
+      onSuccess(url)
+    )
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+function isLineClicked(clickedPos) {
+  const { x: clickedX, y: clickedY } = clickedPos;
+  const idx = gMeme.lines.findIndex(
+    line =>
+      clickedX >= line.x &&
+      clickedX <= line.x + line.width &&
+      clickedY >= line.y - line.height &&
+      clickedY <= line.y
+  );
+  // If no matches exit
+  if (idx === -1) return false;
+  // Set selected line to matched line index
+  gMeme.selectedLineIdx = idx;
+  setInputFontFamilyTo();
+  return true;
+}
+
+function moveTo(toNextPage) {
+  // Last page going forward
+  if (toNextPage && gPages.curPage === gPages.numPages)
+    return (gPages.curPage = 0);
+  // other going forward
+  if (toNextPage) return gPages.curPage++;
+  // First page going backwards
+  if (!toNextPage && gPages.curPage === 0)
+    return (gPages.curPage = gPages.numPages);
+  // other going backwards
+  gPages.curPage--;
+}
+
 function _createImgs() {
   // TODO: write functionallity
   const imgs = [];
@@ -105,6 +154,10 @@ function getImgById(id) {
 
 function getMeme() {
   return gMeme;
+}
+
+function getSelectedLine() {
+  return gMeme.lines[gMeme.selectedLineIdx];
 }
 
 function saveMeme() {
@@ -191,42 +244,6 @@ function setLineWidth(line, width) {
   line.width = width;
 }
 
-function doUploadImg(imgDataUrl, onSuccess) {
-  //Pack the image for delivery
-  const formData = new FormData();
-  formData.append('img', imgDataUrl);
-  //Send a post req with the image to the server
-  fetch('//ca-upload.com/here/upload.php', {
-    method: 'POST',
-    body: formData,
-  }) //Gets the result and extract the text/ url from it
-    .then(res => res.text())
-    .then(url =>
-      //Pass the url we got to the callBack func onSuccess, that will create the link to facebook
-      onSuccess(url)
-    )
-    .catch(err => {
-      console.error(err);
-    });
-}
-
-function isLineClicked(clickedPos) {
-  const { x: clickedX, y: clickedY } = clickedPos;
-  const idx = gMeme.lines.findIndex(
-    line =>
-      clickedX >= line.x &&
-      clickedX <= line.x + line.width &&
-      clickedY >= line.y - line.height &&
-      clickedY <= line.y
-  );
-  // If no matches exit
-  if (idx === -1) return false;
-  // Set selected line to matched line index
-  gMeme.selectedLineIdx = idx;
-  setInputFontFamilyTo();
-  return true;
-}
-
 function setLineDrag(isDrag) {
   gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag;
 }
@@ -260,19 +277,6 @@ function resetMeme() {
 function getEmojis() {
   const pageOn = gPages.curPage * EMOJI_PER_PAGE;
   return gEmojis.slice(pageOn, pageOn + EMOJI_PER_PAGE);
-}
-
-function moveTo(toNextPage) {
-  // Last page going forward
-  if (toNextPage && gPages.curPage === gPages.numPages)
-    return (gPages.curPage = 0);
-  // other going forward
-  if (toNextPage) return gPages.curPage++;
-  // First page going backwards
-  if (!toNextPage && gPages.curPage === 0)
-    return (gPages.curPage = gPages.numPages);
-  // other going backwards
-  gPages.curPage--;
 }
 
 function setMemeToCurMeme(id) {

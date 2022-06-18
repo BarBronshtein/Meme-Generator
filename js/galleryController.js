@@ -16,19 +16,6 @@ function renderGallery() {
   renderSearchWords(gShowAllCategories);
 }
 
-function onImgSelect(id) {
-  removeActiveStyleBtn();
-  setImg(id);
-  show('.meme-editor');
-  renderEmojis();
-  renderMeme();
-}
-
-function onSetFilterBy(txt) {
-  setFilterBy(txt);
-  renderGallery();
-}
-
 function renderSearchWords(showAll) {
   setShowAllCategories(showAll);
   const searchKeys = getSearchKeySearchCountMap();
@@ -60,16 +47,6 @@ function onMakeFsBigger(elSpan, key) {
   renderGallery(gShowAllCategories);
 }
 
-function setShowAllCategories(value) {
-  gShowAllCategories = value;
-}
-
-function onImgInput(ev) {
-  console.log('hi');
-  loadImageFromInput(ev);
-  show('.meme-editor');
-}
-
 // CallBack func will run on success load of the img
 function loadImageFromInput(ev) {
   var reader = new FileReader();
@@ -84,4 +61,27 @@ function loadImageFromInput(ev) {
     };
   };
   reader.readAsDataURL(ev.target.files[0]); // Read the file we picked
+}
+
+function setShowAllCategories(value) {
+  gShowAllCategories = value;
+}
+
+function onImgInput(ev) {
+  console.log('hi');
+  loadImageFromInput(ev);
+  show('.meme-editor');
+}
+
+function onImgSelect(id) {
+  removeActiveStyleBtn();
+  setImg(id);
+  show('.meme-editor');
+  renderEmojis();
+  renderMeme();
+}
+
+function onSetFilterBy(txt) {
+  setFilterBy(txt);
+  renderGallery();
 }

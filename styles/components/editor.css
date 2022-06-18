@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.meme-editor .canvas-container {
+  margin-inline-end: 1rem;
+}
+
 .features {
   margin: auto;
 }

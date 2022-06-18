@@ -26,24 +26,26 @@ function resizeCanvas() {
   }
   gElMemeEditor.classList.contains('hidden') || renderMeme();
 }
+
 function renderMeme(toRenderRect = true) {
-  // We dont render rectangle around selected line only when the user uploads the canvas or downloads it
-  //Draw the meme on the canvas
+  // Set img as meme image id
   const meme = getMeme();
   const memeImg = getImgById(meme.selectedImgId);
   const img = new Image();
+
   img.src = memeImg.url;
+  // On image load draw image draw lines
   img.onload = () => {
     drawImage(img);
     meme.lines.forEach(drawText);
+    // Draws rectangle around if toRenderRect is false
     toRenderRect && drawRectOnSelectedLine();
   };
 }
 function drawRectOnSelectedLine() {
   const RECT_X_PADDING = 5;
-  const meme = getMeme();
-  const selectedLine = meme.lines[meme.selectedLineIdx];
-  if (!selectedLine || !selectedLine.txt) return;
+  const selectedLine = getSelectedLine();
+  if (!selectedLine) return;
   const { lineWidth, lineHeight } = textSize(selectedLine.txt);
   setLineWidth(selectedLine, lineWidth);
   setLineHeight(selectedLine, lineHeight);
@@ -72,11 +74,6 @@ function onSetLineTxt(txt) {
   renderMeme();
 }
 
-function textSize(txt) {
-  const lineWidth = gCtx.measureText(txt).width;
-  const lineHeight = gCtx.measureText('M').width;
-  return { lineHeight, lineWidth };
-}
 function drawText({ x, y, colors, txt, size, font }) {
   // Drawing text
   gCtx.font = `${size}px ${font}`;
@@ -84,83 +81,6 @@ function drawText({ x, y, colors, txt, size, font }) {
   gCtx.strokeStyle = colors.strokeColor;
   gCtx.fillText(txt, x, y);
   gCtx.strokeText(txt, x, y);
-}
-
-function drawImage(img) {
-  gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
-}
-
-function onAddLine(emoji = '') {
-  const newLine = addLine();
-  if (emoji) newLine.txt = emoji;
-  const { lineWidth, lineHeight } = textSize(newLine.txt);
-  setNewLinePos(gCanvas, lineWidth, lineHeight);
-  renderMeme();
-  setInputValueTo(emoji);
-}
-
-function setInputValueTo(value = '') {
-  gElTxt.value = value;
-}
-function onChangeLine() {
-  changeLine();
-  focus();
-  setInputFontFamilyTo();
-  renderMeme();
-}
-function setInputFontFamilyTo() {
-  const meme = getMeme();
-  gElSelectFontFamily.value = meme.lines.at(meme.selectedLineIdx).font;
-}
-
-function focus() {
-  gElTxt.focus();
-
-  const meme = getMeme();
-  gElTxt.value = meme.lines.at(meme.selectedLineIdx).txt;
-  // Clears input when user start typing when txt is set to default
-  if (gElTxt.value === 'Write Your Meme') {
-    gElTxt.value = '';
-  }
-}
-
-function onSetStrokeClr(color) {
-  setStrokeClr(color);
-  renderMeme();
-}
-
-function onSetFontFamily(font) {
-  setFontFamily(font);
-  renderMeme();
-}
-
-function onSetFillClr(color) {
-  setFillClr(color);
-  renderMeme();
-}
-
-function onSetTextPos(bringDown) {
-  setTextPos(bringDown);
-  renderMeme();
-}
-
-function onSetFontSize(toIncrease) {
-  setFontSize(toIncrease);
-  renderMeme();
-}
-
-function onDeleteLine() {
-  const remainingLines = deleteLine();
-  renderMeme();
-  remainingLines || setInputValueTo();
-}
-
-function onSetAlignment(align) {
-  setAlignment(align);
-  const meme = getMeme();
-  const { lineWidth } = textSize(meme.lines.at(meme.selectedLineIdx).txt);
-  setLinePosX(gCanvas, lineWidth);
-  renderMeme();
 }
 
 function downloadImg(elLink) {
@@ -193,7 +113,7 @@ function setGrabOn(ev) {
   // When user press mouse down or touch down canvas grabs text if its there
   // TODO:Find text to drag
   const pos = getEvPos(ev);
-  if (!isLineClicked(pos)) return;
+  if (!isLineClicked(pos)) return renderMeme(false); // Wont render rectangle around text
   setInputFontFamilyTo();
 
   // Supporting dbl click on mobile to make inline editing
@@ -267,6 +187,90 @@ function renderEmojis() {
   );
   html += '<span class="btn pagination-btn" onclick="onMoveTo(true)">></span>';
   gElEmojis.innerHTML = html;
+}
+
+function textSize(txt) {
+  const lineWidth = gCtx.measureText(txt).width;
+  const lineHeight = gCtx.measureText('M').width;
+  return { lineHeight, lineWidth };
+}
+
+function drawImage(img) {
+  gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
+}
+
+function onAddLine(emoji = '') {
+  const newLine = addLine();
+  if (emoji) newLine.txt = emoji;
+  const { lineWidth, lineHeight } = textSize(newLine.txt);
+  setNewLinePos(gCanvas, lineWidth, lineHeight);
+  renderMeme();
+  setInputValueTo(emoji);
+}
+
+function onChangeLine() {
+  changeLine();
+  focus();
+  setInputFontFamilyTo();
+  renderMeme();
+}
+function setInputFontFamilyTo() {
+  const selectedLine = getSelectedLine();
+  gElSelectFontFamily.value = selectedLine.font;
+}
+
+function focus() {
+  gElTxt.focus();
+  const selectedLine = getSelectedLine();
+  gElTxt.value = selectedLine.txt;
+  // Clears input when user start typing when txt is set to default
+  if (gElTxt.value === 'Write Your Meme') {
+    gElTxt.value = '';
+  }
+}
+
+function onSetStrokeClr(color) {
+  setStrokeClr(color);
+  renderMeme();
+}
+
+function setInputValueTo(value = '') {
+  gElTxt.value = value;
+}
+
+function onSetFontFamily(font) {
+  setFontFamily(font);
+  renderMeme();
+}
+
+function onSetFillClr(color) {
+  setFillClr(color);
+  renderMeme();
+}
+
+function onSetTextPos(bringDown) {
+  setTextPos(bringDown);
+  renderMeme();
+}
+
+function onSetFontSize(toIncrease) {
+  setFontSize(toIncrease);
+  renderMeme();
+}
+
+function onDeleteLine() {
+  const remainingLines = deleteLine();
+  renderMeme();
+  // clears input text if there are no remaining lines
+  remainingLines || setInputValueTo();
+}
+
+function onSetAlignment(align) {
+  setAlignment(align);
+  const selectedLine = getSelectedLine();
+  const { lineWidth } = textSize(selectedLine.txt);
+  setLinePosX(gCanvas, lineWidth);
+  renderMeme();
 }
 
 function onMoveTo(toNextPage) {
