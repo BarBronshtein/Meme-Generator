@@ -193,7 +193,6 @@ function setGrabOn(ev) {
   // When user press mouse down or touch down canvas grabs text if its there
   // TODO:Find text to drag
   const pos = getEvPos(ev);
-  console.log(ev.type);
   if (!isLineClicked(pos)) return;
   setInputFontFamilyTo();
 

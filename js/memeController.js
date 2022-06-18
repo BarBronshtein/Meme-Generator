@@ -23,7 +23,7 @@ function show(newSelector, elBtn) {
     // Sets active class om button
     const elActive = document.querySelector('.active');
     elActive?.classList.remove('active');
-    elBtn.classList.add('active');
+    elBtn?.classList.add('active');
     // Reset meme
     setInputValueTo();
     resetShareContainer();
@@ -50,5 +50,5 @@ function cursorNormal() {
 }
 
 function removeActiveStyleBtn() {
-  document.querySelector('.active').classList.remove('active');
+  document.querySelector('.active')?.classList.remove('active');
 }

@@ -74,11 +74,11 @@
     padding: 80px 80px;
   }
   .img-container > * > img {
-    cursor: pointer;
     transition: 0.2s all ease;
   }
 
-  .img-container > * > img:hover {
+  .img-container > * > img:hover,
+  .saved-memes > * > img:hover {
     outline: 5px solid #ff7f00;
   }
 

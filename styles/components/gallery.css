@@ -34,7 +34,14 @@
   margin-bottom: 2rem;
 }
 
+.img-container > * > img {
+  cursor: pointer;
+}
+
 /* Saved Memes Section */
 .saved-memes {
   margin: 2rem 0;
+}
+.save-memes > *img {
+  cursor: pointer;
 }
