@@ -5,7 +5,7 @@
   }
 
   .btn.menu-toggle:hover {
-    color: var(--primary-color);
+    color: var(--light-color);
   }
 
   .main-header {

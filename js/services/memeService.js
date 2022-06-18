@@ -7,6 +7,7 @@ let gKeywordSearchCountMap = {
   politics: 5,
   cute: 3,
 };
+let gImgIdx;
 let gImgs;
 const gFilterBy = { txt: '' };
 let gSavedMemes = [];
@@ -46,14 +47,22 @@ function _createImgs() {
     imgs.push(img);
   }
   gImgs = imgs;
+  gImgIdx = gImgs.length + 1;
 }
 
-function _createImg(i) {
+function _createImg(i, url = '') {
   return {
     id: i,
-    url: `img/meme-imgs/${i}.jpg`,
+    url: url || `img/meme-imgs/${i}.jpg`,
     categories: ['funny'], // TODO:replace with a function that create random categories based on a stock of categories
   };
+}
+
+function addImg(url) {
+  const id = gImgIdx;
+  gImgs.push(_createImg(id, url));
+  gMeme.selectedImgId = id;
+  gImgIdx++;
 }
 
 function setFontFamily(font) {
