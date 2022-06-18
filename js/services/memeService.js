@@ -113,10 +113,12 @@ function getSavedMemes() {
 }
 
 function deleteLine() {
+  // Short circut if there are no lines dont splice
   gMeme.lines.length && gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+  // If selected line index is -1 dont substract any furthore
   gMeme.selectedLineIdx > -1 ? gMeme.selectedLineIdx-- : '';
-  if (gMeme.selectedLineIdx > -1 && gMeme.lines.length)
-    gMeme.selectedLineIdx = gMeme.lines.length - 1;
+  // Sets selected line to last line if there are any
+  if (gMeme.lines.length) gMeme.selectedLineIdx = gMeme.lines.length - 1;
   return gMeme.lines.length;
 }
 
