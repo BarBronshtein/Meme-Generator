@@ -28,6 +28,7 @@ function show(newSelector, elBtn) {
     setInputValueTo();
     resetShareContainer();
     resetMeme();
+    setInputFontFamilyTo();
   }
   if (newSelector === '.saved-memes') renderSavedMemes();
   if (newSelector === '.meme-gallery') renderGallery();

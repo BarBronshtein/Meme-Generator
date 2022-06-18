@@ -193,9 +193,15 @@ function setGrabOn(ev) {
   // When user press mouse down or touch down canvas grabs text if its there
   // TODO:Find text to drag
   const pos = getEvPos(ev);
+  console.log(ev.type);
   if (!isLineClicked(pos)) return;
+  setInputFontFamilyTo();
+
   // Supporting dbl click on mobile to make inline editing
-  if (ev.type === 'click' && gTapped) {
+  if (
+    (ev.type === 'click' && gTapped) ||
+    (ev.type === 'touchstart' && gTapped)
+  ) {
     gElBody.style.cursor = 'auto';
     gTapped = false;
     return focus();
@@ -204,6 +210,8 @@ function setGrabOn(ev) {
     gTapped = true;
     return setTimeout(() => (gTapped = false), 500);
   }
+  gTapped = true;
+  setTimeout(() => (gTapped = false), 500);
   // If text is selected make line drag to
   setLineDrag(true);
   gStartPos = pos;

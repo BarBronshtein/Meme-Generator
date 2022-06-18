@@ -7,33 +7,14 @@ let gKeywordSearchCountMap = {
   politics: 5,
   cute: 3,
 };
-let gImgs = [
-  { id: 1, url: 'img/meme-imgs/1.jpg' },
-  { id: 2, url: 'img/meme-imgs/2.jpg' },
-];
+let gImgs;
 const gFilterBy = { txt: '' };
 let gSavedMemes = [];
-const gEmojis = [
-  '🍕',
-  '🥑',
-  '😶‍🌫️',
-  '☠️',
-  '👺',
-  '🤡',
-  '🐸',
-  '👅',
-  '🦷',
-  '👁️',
-  '🗣️',
-  '🎁',
-  '💍',
-  '🥇',
-  '🥊',
-];
+const gEmojis = ['🍕', '☠️', '👺', '🤡', '🐸', '👅', '🦷', '🎁', '💍'];
 const EMOJI_PER_PAGE = 3;
 const gPages = {
   curPage: 0,
-  numPages: 4,
+  numPages: 2,
 };
 const STORAGE_KEY = 'memesDB';
 
@@ -118,7 +99,6 @@ function getMeme() {
 }
 
 function saveMeme() {
-  console.log(gSavedMemes);
   gSavedMemes.push(gMeme);
   gSavedMemes.at(-1).url = '';
   gSavedMemes.at(-1).url = getImgById(gSavedMemes.at(-1).selectedImgId).url;
@@ -259,6 +239,7 @@ function resetMeme() {
         x: 100,
         y: 35,
         isDrag: false,
+        font: 'Impact',
       },
     ],
     font: 'Impact',
