@@ -25,7 +25,7 @@
           <li class="btn btn-nav" onclick="show('.saved-memes',this)">
             Memess
           </li>
-          <li class="btn btn-nav">About</li>
+          <li onclick="show('.about',this)" class="btn btn-nav">About</li>
         </ul>
         <button onclick="toggleMenu()" class="btn menu-toggle">☰</button>
       </div>
@@ -177,6 +177,33 @@
       <section
         class="saved-memes meme-gallery grid justify-center hidden"
       ></section>
+      <section
+        class="about main-layout flex justify-center align-center align-s-c hidden"
+      >
+        <div class="self-photo">
+          <img src="img/about/about-img.jpeg" alt="" />
+        </div>
+        <div class="flex flex-column">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
+            exercitationem quos deserunt adipisci labore quibusdam, quia numquam
+            necessitatibus saepe nulla et ut minima aut totam consequatur rem
+            magni nihil nemo error quis cumque aperiam ipsa ad. Voluptates, in
+            quae! Provident, enim veritatis blanditiis veniam eos quos neque sed
+            reprehenderit voluptas.
+          </p>
+          <div class="icons flex bg-primary">
+            <a href="https://github.com/BarBronshtein" target="_blank"
+              ><i class="fa-brands fa-github"></i
+            ></a>
+            <a
+              href="https://www.linkedin.com/in/bar-bronshtein-52070622b/"
+              target="_blank"
+              ><i class="fa-brands fa-linkedin"></i
+            ></a>
+          </div>
+        </div>
+      </section>
     </main>
     <footer class="main-footer flex justify-center bg-dark text-light">
       <div

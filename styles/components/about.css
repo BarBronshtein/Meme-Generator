@@ -1,0 +1,22 @@
+.about img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+}
+
+.about {
+  flex-direction: column;
+  margin: 2rem;
+  background-color: var(--light-color);
+}
+
+.about > :last-child {
+  margin: 0 2rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.about > :last-child > * {
+  margin-top: 2rem;
+}
