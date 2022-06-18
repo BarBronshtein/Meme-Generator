@@ -7,7 +7,7 @@
 @import 'components/screen.css';
 @import 'basic/buttons.css';
 @import 'mq/mq.css';
-
+@import 'setup/vars.css';
 /* 
 @import 'C:/Users/shanp/OneDrive/Desktop/coding_academy/sprint2/styles/basic/base.css';
 @import 'C:/Users/shanp/OneDrive/Desktop/coding_academy/sprint2/styles/basic/helpers.css';

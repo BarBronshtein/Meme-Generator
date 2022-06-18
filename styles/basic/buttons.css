@@ -3,7 +3,7 @@
   transition: 0.4s all ease;
 }
 .btn.key-search-btn:hover {
-  background-color: #fff;
+  background-color: var(--light-color);
 }
 .btn.key-search-btn:hover:last-child {
   border-end-end-radius: 50px;
@@ -22,7 +22,7 @@
 .features .btn {
   width: 3rem;
   height: 3rem;
-  background-color: #fff;
+  background-color: var(--light-color);
 }
 
 .btn-stroke-img,
@@ -42,7 +42,7 @@
 }
 
 .btn:hover {
-  background-color: #ff7f00;
+  background-color: var(--primary-color);
 }
 
 .btn {

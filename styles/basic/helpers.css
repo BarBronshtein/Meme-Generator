@@ -69,18 +69,18 @@
   background-color: #333;
 }
 .bg-light {
-  background-color: #fff;
+  background-color: var(--light-color);
 }
 .text-primary {
-  color: #ff7f00;
+  color: var(--primary-color);
 }
 .text-secondary {
-  color: #e3e3e3;
+  color: var(--secondary-color);
 }
 .text-dark {
-  color: #333;
+  color: var(--dark-color);
 }
 
 .text-light {
-  color: #fff;
+  color: var(--light-color);
 }

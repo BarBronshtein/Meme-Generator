@@ -14,28 +14,28 @@
 
 .icons > * {
   padding: 0.5rem 1rem;
-  border-right: 1px solid #fff;
+  border-right: 1px solid var(--light-color);
   cursor: pointer;
   transition: 0.4s ease all;
 }
 
+.icons > *:hover {
+  background-color: var(--secondary-color);
+}
+
 .icons > .fa-instagram:hover {
   color: #833ab4;
-  background-color: #f5f5f5;
 }
 .icons > .fa-github:hover {
   color: #ad5c51;
-  background-color: #f5f5f5;
 }
 .icons > .fa-facebook-f:hover {
   color: #3b5998;
-  background-color: #f5f5f5;
 }
 .icons > .fa-linkedin:hover {
   color: #0072b1;
-  background-color: #e5e5e5;
 }
 
 .icons > :first-child {
-  border-left: 1px solid #fff;
+  border-left: 1px solid var(--light-color);
 }
