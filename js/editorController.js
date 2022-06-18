@@ -129,8 +129,10 @@ function setGrabOn(ev) {
     gTapped = true;
     return setTimeout(() => (gTapped = false), 500);
   }
-  gTapped = true;
-  setTimeout(() => (gTapped = false), 500);
+  if (ev.type === 'touchstart') {
+    gTapped = true;
+    setTimeout(() => (gTapped = false), 500);
+  }
   // If text is selected make line drag to
   setLineDrag(true);
   gStartPos = pos;
