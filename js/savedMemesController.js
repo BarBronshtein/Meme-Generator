@@ -11,6 +11,7 @@ function renderSavedMemes() {
   );
   gElSavedMemes.innerHTML = html;
 }
+
 function onMemeSelect(id) {
   removeActiveStyleBtn();
   show('.meme-editor');

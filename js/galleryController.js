@@ -5,6 +5,7 @@ const gElImgContainer = document.querySelector('.img-container');
 const gElSearchKeys = document.querySelector('.key-search-words');
 const gElFilterInput = document.querySelector("[name='filter']");
 let gShowAllCategories = false;
+
 function renderGallery() {
   const imgs = getImgs();
   let html = `<div class="user-img-container"><input onchange="onImgInput(event)" class="btn user-img" type="file" name="file" /></div>`;
@@ -33,18 +34,18 @@ function renderSearchWords(showAll) {
   gElSearchKeys.innerHTML = html;
   // Sets each category font size by popularity of clicks
   gElSearchKeys.childNodes.forEach(
-    key => (key.style.fontSize = key.dataset.fs * 4 + 'px')
+    key =>
+      (key.style.fontSize =
+        key.dataset.fs * 4 > 75 ? '75px' : key.dataset.fs * 4 + 'px')
   );
 }
 
 function onMakeFsBigger(elSpan, key) {
   // Make selected key word bigger
-  const fontSize = growKeySearchWord(key);
-  elSpan.style.fontSize = fontSize * 4 + 'px';
-  // Filter images by key word
+  growKeySearchWord(key);
   gElFilterInput.value = elSpan.textContent;
   setFilterBy(elSpan.textContent);
-  renderGallery(gShowAllCategories);
+  renderSearchWords(gShowAllCategories);
 }
 
 // CallBack func will run on success load of the img

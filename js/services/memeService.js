@@ -1,6 +1,6 @@
 'use strict';
 
-let gKeywordSearchCountMap = {
+const gKeywordSearchCountMap = {
   funny: 6,
   animals: 10,
   baby: 2,
@@ -27,7 +27,8 @@ let gMeme = {
       txt: 'Write Your Meme',
       size: 25,
       align: 'center',
-      colors: { fillColor: '#fff', strokeColor: '#000' },
+      fillColor: '#fff',
+      strokeColor: '#000',
       x: 100,
       y: 35,
       isDrag: false,
@@ -71,7 +72,6 @@ function isLineClicked(clickedPos) {
   if (idx === -1) return false;
   // Set selected line to matched line index
   gMeme.selectedLineIdx = idx;
-  setInputFontFamilyTo();
   return true;
 }
 
@@ -115,16 +115,19 @@ function addImg(url) {
 }
 
 function setFontFamily(font) {
-  gMeme.lines[gMeme.selectedLineIdx].font = font;
+  const selectedLine = getSelectedLine();
+  selectedLine.font = font;
   gMeme.font = font;
 }
 
 function setTextPos(bringDown) {
-  gMeme.lines[gMeme.selectedLineIdx].y += bringDown * 20 - 10;
+  const selectedLine = getSelectedLine();
+  selectedLine.y += bringDown * 20 - 10;
 }
 
 function setAlignment(align) {
-  gMeme.lines[gMeme.selectedLineIdx].align = align;
+  const selectedLine = getSelectedLine();
+  selectedLine.align = align;
 }
 
 function addLine() {
@@ -133,7 +136,8 @@ function addLine() {
     txt: 'Write Your Meme',
     size: 25,
     align: 'center',
-    colors: { fillColor: '#fff', strokeColor: '#000' },
+    fillColor: '#fff',
+    strokeColor: '#000',
     x: 0,
     y: 20,
     isDrag: false,
@@ -162,7 +166,6 @@ function getSelectedLine() {
 
 function saveMeme() {
   gSavedMemes.push(gMeme);
-  gSavedMemes.at(-1).url = '';
   gSavedMemes.at(-1).url = getImgById(gSavedMemes.at(-1).selectedImgId).url;
   gSavedMemes.at(-1).id = makeId();
   saveToStorage(STORAGE_KEY, gSavedMemes);
@@ -185,9 +188,9 @@ function deleteLine() {
 }
 
 function setLinePosX(canvas, width) {
-  const line = gMeme.selectedLineIdx;
-  const align = gMeme.lines.at(line).align;
-  const pos = gMeme.lines.at(line);
+  const selectedLine = getSelectedLine();
+  const align = selectedLine.align;
+  const pos = selectedLine;
   if (align === 'center') pos.x = (canvas.width - width) / 2;
   else if (align === 'left') pos.x = 0;
   else pos.x = canvas.width - width;
@@ -210,8 +213,9 @@ function setNewLinePos(canvas, width, height) {
   setLinePosY(canvas, height);
 }
 
-function setLineTxt(txt, line) {
-  gMeme.lines.at(line).txt = txt;
+function setLineTxt(txt) {
+  const selectedLine = getSelectedLine();
+  selectedLine.txt = txt;
 }
 
 function setImg(id) {
@@ -228,28 +232,42 @@ function changeLine() {
 function setFontSize(toIncrease) {
   // true value equals 1 in js and false equals to 0
   // The ratio need to be 2:1 to increase and decrease by the same value
-  gMeme.lines.at(gMeme.selectedLineIdx).size += toIncrease * 2 - 1;
-}
-function setStrokeClr(color) {
-  gMeme.lines.at(gMeme.selectedLineIdx).colors.strokeColor = color;
-}
-function setFillClr(color) {
-  gMeme.lines.at(gMeme.selectedLineIdx).colors.fillColor = color;
+  const selectedLine = getSelectedLine();
+  selectedLine.size += toIncrease * 2 - 1;
 }
 
-function setLineHeight(line, height) {
-  line.height = height;
+function setFilterBy(txt) {
+  gFilterBy.txt = txt;
 }
-function setLineWidth(line, width) {
-  line.width = width;
+
+function setStrokeClr(color) {
+  const selectedLine = getSelectedLine();
+  selectedLine.strokeColor = color;
+}
+
+function setFillClr(color) {
+  const selectedLine = getSelectedLine();
+  selectedLine.fillColor = color;
+}
+
+function setLineHeight(height) {
+  const selectedLine = getSelectedLine();
+  selectedLine.height = height;
+}
+
+function setLineWidth(width) {
+  const selectedLine = getSelectedLine();
+  selectedLine.width = width;
 }
 
 function setLineDrag(isDrag) {
-  gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag;
+  const selectedLine = getSelectedLine();
+  selectedLine.isDrag = isDrag;
 }
 
 function moveLine(dx, dy) {
-  const pos = gMeme.lines[gMeme.selectedLineIdx];
+  const selectedLine = getSelectedLine();
+  const pos = selectedLine;
   pos.x += dx;
   pos.y += dy;
 }
@@ -263,7 +281,8 @@ function resetMeme() {
         txt: 'Write Your Meme',
         size: 25,
         align: 'center',
-        colors: { fillColor: '#fff', strokeColor: '#000' },
+        fillColor: '#fff',
+        strokeColor: '#000',
         x: 100,
         y: 35,
         isDrag: false,
@@ -283,10 +302,6 @@ function setMemeToCurMeme(id) {
   const meme = gSavedMemes.find(meme => meme.id === id);
   if (!meme) return;
   gMeme = meme;
-}
-
-function setFilterBy(txt) {
-  gFilterBy.txt = txt;
 }
 
 function getSearchKeySearchCountMap() {

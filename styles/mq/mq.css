@@ -101,11 +101,6 @@
     transition: 0.2s all ease;
   }
 
-  .img-container > * > img:hover,
-  .saved-memes > * > img:hover {
-    outline: 5px solid var(--primary-color);
-  }
-
   .meme-editor {
     flex-direction: row;
   }

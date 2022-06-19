@@ -13,7 +13,6 @@ function onInit() {
 }
 
 function show(newSelector, elBtn) {
-  setShowAllCategories(false);
   // Hiding prev section and showing new section
   document.querySelector(gCurSelector).classList.add('hidden');
   document.querySelector(newSelector).classList.remove('hidden');
@@ -24,14 +23,18 @@ function show(newSelector, elBtn) {
     const elActive = document.querySelector('.active');
     elActive?.classList.remove('active');
     elBtn?.classList.add('active');
-    // Reset meme
+    // Reset meme and reset editor
     setInputValueTo();
     resetShareContainer();
     resetMeme();
     setInputFontFamilyTo();
   }
   if (newSelector === '.saved-memes') renderSavedMemes();
-  if (newSelector === '.meme-gallery') renderGallery();
+  if (newSelector === '.meme-gallery') {
+    setShowAllCategories(false);
+    renderGallery();
+  }
+
   toggleMenu(true);
 }
 

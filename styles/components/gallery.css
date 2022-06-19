@@ -8,6 +8,7 @@
 .search-bar {
   margin: 1rem auto;
   border-radius: 30px;
+  max-height: 188px;
 }
 
 .search-bar > :first-child {
@@ -20,6 +21,7 @@
 }
 .search-bar > div:last-child {
   border-radius: 50px;
+  max-height: 88px;
 }
 
 .search-bar > div:last-child > * {
@@ -38,11 +40,16 @@
   cursor: pointer;
 }
 
+.img-container > * > img:hover,
+.saved-memes > * > img:hover {
+  outline: 5px solid var(--primary-color);
+}
+
 /* Saved Memes Section */
 .saved-memes {
   margin: 2rem 0;
 }
-.save-memes > *img {
+.saved-memes > * {
   cursor: pointer;
 }
 

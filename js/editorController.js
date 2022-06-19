@@ -5,10 +5,15 @@ let gCtx;
 let gStartPos;
 let gTapped = false;
 const gTouchEvs = ['touchstart', 'touchend', 'touchmove'];
+
 const gElTxt = document.querySelector('[name=text]');
+
 const gElMemeEditor = document.querySelector('.meme-editor');
+
 const gElShareContainer = document.querySelector('.share-container');
+
 const gElEmojis = document.querySelector('.emojis');
+
 const gElSelectFontFamily = document.querySelector("[name='font-family']");
 
 function createCanvas() {
@@ -18,7 +23,7 @@ function createCanvas() {
 
 function resizeCanvas() {
   if (window.innerWidth < 780) {
-    gCanvas.width = '300';
+    gCanvas.width = '250';
     gCanvas.height = '250';
   } else {
     gCanvas.width = '500';
@@ -42,13 +47,14 @@ function renderMeme(toRenderRect = true) {
     toRenderRect && drawRectOnSelectedLine();
   };
 }
+
 function drawRectOnSelectedLine() {
   const RECT_X_PADDING = 5;
   const selectedLine = getSelectedLine();
   if (!selectedLine) return;
   const { lineWidth, lineHeight } = textSize(selectedLine.txt);
-  setLineWidth(selectedLine, lineWidth);
-  setLineHeight(selectedLine, lineHeight);
+  setLineWidth(lineWidth);
+  setLineHeight(lineHeight);
   gCtx.strokeRect(
     selectedLine.x - RECT_X_PADDING / 2,
     selectedLine.y,
@@ -57,28 +63,32 @@ function drawRectOnSelectedLine() {
   );
 }
 
+function onSetTextProp(prop, val) {
+  setTextProp(prop, val);
+  renderMeme();
+}
+
 function onSetLineTxt(txt) {
   const meme = getMeme();
-  const line = meme.selectedLineIdx;
   if (!meme.lines.length) {
     // Adds new line if there arent any and positining it accordingly
     addLine();
-    const line = meme.selectedLineIdx;
-    const { lineWidth, lineHeight } = textSize(meme.lines[line].txt);
+    const selectedLined = getSelectedLine();
+    const { lineWidth, lineHeight } = textSize(selectedLined.txt);
     setNewLinePos(gCanvas, lineWidth, lineHeight);
   }
   // If text user put is empty show write your meme otherwise use given txt
   if (!txt) txt = 'Write Your Meme';
-  setLineTxt(txt, line);
+  setLineTxt(txt);
 
   renderMeme();
 }
 
-function drawText({ x, y, colors, txt, size, font }) {
+function drawText({ x, y, fillColor, strokeColor, txt, size, font }) {
   // Drawing text
   gCtx.font = `${size}px ${font}`;
-  gCtx.fillStyle = colors.fillColor;
-  gCtx.strokeStyle = colors.strokeColor;
+  gCtx.fillStyle = fillColor;
+  gCtx.strokeStyle = strokeColor;
   gCtx.fillText(txt, x, y);
   gCtx.strokeText(txt, x, y);
 }
@@ -111,7 +121,7 @@ function uploadImg() {
 
 function setGrabOn(ev) {
   // When user press mouse down or touch down canvas grabs text if its there
-  // TODO:Find text to drag
+  // Find text to drag
   const pos = getEvPos(ev);
   if (!isLineClicked(pos)) return renderMeme(false); // Wont render rectangle around text
   setInputFontFamilyTo();
@@ -129,6 +139,7 @@ function setGrabOn(ev) {
     gTapped = true;
     return setTimeout(() => (gTapped = false), 500);
   }
+  // if touch event wont disable drag event
   if (ev.type === 'touchstart') {
     gTapped = true;
     setTimeout(() => (gTapped = false), 500);
@@ -193,7 +204,7 @@ function renderEmojis() {
 
 function textSize(txt) {
   const lineWidth = gCtx.measureText(txt).width;
-  const lineHeight = gCtx.measureText('M').width;
+  const lineHeight = gCtx.measureText(txt).fontBoundingBoxAscent;
   return { lineHeight, lineWidth };
 }
 
@@ -216,6 +227,7 @@ function onChangeLine() {
   setInputFontFamilyTo();
   renderMeme();
 }
+
 function setInputFontFamilyTo() {
   const selectedLine = getSelectedLine();
   gElSelectFontFamily.value = selectedLine.font;

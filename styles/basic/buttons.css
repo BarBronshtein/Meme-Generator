@@ -48,7 +48,3 @@
 .btn {
   cursor: pointer;
 }
-
-span.btn.key-search-btn:hover {
-  padding: 1.55rem;
-}
